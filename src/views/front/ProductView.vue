@@ -17,7 +17,7 @@
                     <ul class="row g-3 p-0">
                         <li class="col-lg-4 col-sm-6 col-12" v-for="product in products" :key="product.id">
                             <div class="product-card border border-primary rounded-2 h-100 d-flex flex-column">
-                                <img class="product-img" :src="product.imageUrl"  :alt="product.title" >
+                                <img class="product-img" :src="product.imageUrl" :alt="product.title">
                                 <div class="d-flex flex-column flex-grow-1 p-2">
                                     <h4 class="mt-2 fw-bold flex-grow-1">{{ product.title }}</h4>
                                     <p class="fw-bold"> NT${{ product.price }}</p>
@@ -27,7 +27,9 @@
                         </li>
                     </ul>
                 </div>
-
+                <div class="d-flex justify-content-center">
+                    <PaginationComponent :pages="pagination" :items="filteredProducts" @change-page="getPagination" />
+                </div>
             </div>
         </div>
     </div>
@@ -35,22 +37,30 @@
 <script>
 import { mapState, mapActions } from "pinia";
 import productsStore from '@/stores/productsStore'
+import PaginationComponent from '../../components/front/products/PaginationComponent.vue'
 
 export default {
+    components: {
+        PaginationComponent,
+    },
     created() {
         this.fetchProducts();
+        this.getPagination(this.products)
     },
     methods: {
         ...mapActions(productsStore, [
             'fetchProducts',
-            'changeCategory'
+            'changeCategory',
+            'getPagination'
         ])
     },
     computed: {
         ...mapState(productsStore, [
             'products',
+            'filteredProducts',
             'categoryList',
-            'categorySelected'
+            'categorySelected',
+            'pagination'
         ])
     },
 
@@ -78,7 +88,7 @@ export default {
 .product-card {
     overflow: hidden;
     cursor: pointer;
-    
+
     &:hover {
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
     }
@@ -88,6 +98,7 @@ export default {
     height: 300px;
     object-fit: cover;
     transition: all 0.2s;
+
     &:hover {
         transform: scale(1.05);
     }
