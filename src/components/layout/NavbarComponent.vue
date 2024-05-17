@@ -2,10 +2,7 @@
     <div class="nav bg-primary">
         <div class="d-flex container justify-content-between align-items-center">
 
-            <button class="toggle-btn btn border-0 d-md-none"
-            @click="switchToggle"
-            :class = "{ active: isToggled }"
-            >
+            <button class="toggle-btn btn border-0 d-md-none" @click="switchToggle" :class="{ active: isToggled }">
                 <div class="toggle"></div>
             </button>
             <div class="toggle-menu bg-primary d-md-none">
@@ -39,19 +36,27 @@
                 <div class="d-none d-md-flex align-items-center ms-3">
                     <RouterLink class="nav-link fs-5 p-2 rounded-2" to="">最新消息</RouterLink>
                     <RouterLink class="nav-link fs-5 p-2 rounded-2" to="">品牌故事</RouterLink>
-                    <RouterLink class="nav-link fs-5 p-2 rounded-2" to="">全部商品</RouterLink>
+                    <RouterLink class="nav-link fs-5 p-2 rounded-2" to="/products">全部商品</RouterLink>
                 </div>
             </div>
-            <div class="d-flex ">
+            <div class="d-flex align-items-center">
 
                 <i class="bi bi-search nav-icon rounded-3 fs-5"></i>
-                <i class="bi bi-basket-fill nav-icon rounded-3 fs-5"></i>
+                <div class=" position-relative">
+                    <i class="bi bi-basket-fill nav-icon rounded-3 fs-5"></i>
+                    <span class="position-absolute cartItem-quantity translate-middle badge rounded-pill bg-danger"
+                        v-if="cartList.length">
+                        {{ cartList.length }}
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "pinia";
+import cartStore from '@/stores/cartStore';
 export default {
     data() {
         return {
@@ -59,9 +64,21 @@ export default {
         }
     },
     methods: {
+        ...mapActions(cartStore, [
+            'fetchCart'
+        ]),
         switchToggle() {
             this.isToggled = !this.isToggled
         },
+    },
+    computed: {
+        ...mapState(cartStore, [
+            'cartList',
+
+        ])
+    },
+    created() {
+        this.fetchCart();
     }
 }
 </script>
@@ -72,6 +89,7 @@ export default {
     left: 0;
     right: 0;
     height: 66px;
+    z-index: 100;
 }
 
 .toggle-button {
@@ -81,15 +99,17 @@ export default {
     transition: all 0.25s;
     cursor: pointer;
 }
-.toggle-btn.active ~ .toggle-menu {
+
+.toggle-btn.active~.toggle-menu {
     display: flex;
 }
+
 .toggle {
     position: relative;
     width: 2em;
     height: .25rem;
     background: white;
-    transition: all .5s ;
+    transition: all .5s;
 
     &:before,
     &:after {
@@ -101,7 +121,7 @@ export default {
         position: absolute;
         z-index: -2;
         transition: all 0.5s;
-        
+
     }
 
     &:before {
@@ -116,9 +136,10 @@ export default {
 .active {
     transform: scale(.75);
     z-index: 99;
+
     .toggle {
         background: transparent;
-        
+
 
         &:before {
             top: 0;
@@ -140,6 +161,7 @@ export default {
     left: 0;
     right: 0;
 }
+
 .logo-img {
     height: 50px;
 }

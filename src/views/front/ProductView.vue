@@ -21,7 +21,9 @@
                                 <div class="d-flex flex-column flex-grow-1 p-2">
                                     <h4 class="mt-2 fw-bold flex-grow-1">{{ product.title }}</h4>
                                     <p class="fw-bold"> NT${{ product.price }}</p>
-                                    <button class="product-btn btn btn-outline-primary fw-bold w-100 "> 加入購物車</button>
+                                    <button class="product-btn btn btn-outline-primary fw-bold w-100"
+                                    @click="addToCart(product.id)"
+                                    > 加入購物車</button>
                                 </div>
                             </div>
                         </li>
@@ -36,8 +38,9 @@
 </template>
 <script>
 import { mapState, mapActions } from "pinia";
-import productsStore from '@/stores/productsStore'
-import PaginationComponent from '../../components/front/products/PaginationComponent.vue'
+import productsStore from '@/stores/productsStore';
+import cartStore from '@/stores/cartStore';
+import PaginationComponent from '../../components/front/products/PaginationComponent.vue';
 
 export default {
     components: {
@@ -52,6 +55,9 @@ export default {
             'fetchProducts',
             'changeCategory',
             'getPagination'
+        ]),
+        ...mapActions(cartStore, [
+            'addToCart',
         ])
     },
     computed: {
