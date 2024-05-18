@@ -4,15 +4,18 @@
         <div class="row pt-3">
             <div class="col-md-3">
                 <h3 class="fw-bold pb-3">搜尋關鍵字：</h3>
-                <span class="fw-bold bg-primary text-white p-2 rounded-4">{{ keyword }}</span>
+                <span class="fw-bold bg-primary text-white p-2 rounded-4">{{ $route.query.keyword }}</span>
             </div>
             <div class="col-md-9">
-                <ProductCard 
-                :products ="products"
-                />
-                <div class="d-flex justify-content-center">
-                    <PaginationComponent :pages="pagination" :items="filteredProducts" @change-page="getPagination" />
+                <div v-if="products.length">
+                    <ProductCard :products="products" />
+                    <div class="d-flex justify-content-center">
+                        <PaginationComponent :pages="pagination" :items="filteredProducts"
+                            @change-page="getPagination" />
+                    </div>
                 </div>
+
+                <p className="fs-2 fw-bold text-center mt-5" v-else>沒有符合條件的商品。</p>
             </div>
         </div>
     </div>
@@ -29,15 +32,8 @@ export default {
         ProductCard,
         PaginationComponent
     },
-    data() {
-        return {
-            keyword: '',
-        }
-    },
     created() {
-        console.log(this.$route.query.keyword, this.pagination)
-        this.keyword = this.$route.query.keyword;
-        this.searchProduct(this.keyword)
+        this.searchProduct(this.$route.query.keyword)
     },
     methods: {
         ...mapActions(productsStore, [
@@ -51,6 +47,11 @@ export default {
             'filteredProducts',
             'pagination'
         ])
+    },
+    watch: {
+        $route(to) {
+            this.searchProduct(to.query.keyword)
+        }
     }
 }
 </script>
