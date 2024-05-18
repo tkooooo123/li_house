@@ -34,14 +34,19 @@
                     <img class="logo-img" src="/images/logo_img.png" alt="Li House">
                 </RouterLink>
                 <div class="d-none d-md-flex align-items-center ms-3">
-                    <RouterLink class="nav-link fs-5 p-2 rounded-2" to="">最新消息</RouterLink>
+                    <RouterLink class="nav-link fs-5 p-2 rounded-2" to="/articles">最新消息</RouterLink>
                     <RouterLink class="nav-link fs-5 p-2 rounded-2" to="">品牌故事</RouterLink>
                     <RouterLink class="nav-link fs-5 p-2 rounded-2" to="/products">全部商品</RouterLink>
                 </div>
             </div>
             <div class="d-flex align-items-center">
 
-                <i class="bi bi-search nav-icon rounded-3 fs-5"></i>
+                <div class="position-relative">
+                    <i class="bi bi-search nav-icon rounded-3 fs-5" @click="switchActive"></i>
+                    <SearchDropDown :isActive="isActive" :keywordList="keywordList" @search="handleSearch"
+                        @clickKeyword="clickKeyword" />
+
+                </div>
                 <div class=" position-relative">
                     <i class="bi bi-basket-fill nav-icon rounded-3 fs-5"></i>
                     <span class="position-absolute cartItem-quantity translate-middle badge rounded-pill bg-danger"
@@ -57,18 +62,40 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import cartStore from '@/stores/cartStore';
+import productsStore from "@/stores/productsStore";
+import SearchDropDown from './SearchDropDown.vue'
 export default {
+    components: {
+        SearchDropDown,
+    },
     data() {
         return {
             isToggled: false,
+            isActive: false,
+            keywordList: [],
         }
     },
     methods: {
         ...mapActions(cartStore, [
             'fetchCart'
         ]),
+        ...mapActions(productsStore, [
+            'updateKeyword'
+        ]),
         switchToggle() {
-            this.isToggled = !this.isToggled
+            this.isToggled = !this.isToggled;
+        },
+        switchActive() {
+            this.isActive = !this.isActive;
+        },
+        handleSearch(keyword) {
+            this.updateKeyword(keyword)
+            this.switchActive();
+            this.$router.push({ path: '/search', query: { keyword } });
+        },
+        clickKeyword(item) {
+            this.switchActive();
+            this.$router.push({ path: '/search', query: { keyword: item } });
         },
     },
     computed: {
@@ -84,6 +111,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'bootstrap/scss/functions';
+@import '@/assets/helpers/variables';
+
 .nav {
     position: fixed;
     left: 0;
@@ -173,7 +203,7 @@ export default {
     transition: all .3s ease;
 
     &:hover {
-        color: black;
+        color: $primary;
         background: white;
 
     }
@@ -185,7 +215,7 @@ export default {
     transition: all .3s ease-out;
 
     &:hover {
-        color: black;
+        color: $primary;
         background: white;
     }
 }

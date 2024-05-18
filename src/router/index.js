@@ -26,7 +26,12 @@ const router = createRouter({
         {
           path: 'article/:articleId',
           component: () => import('@/views/front/ArticleDetail.vue')
-        }
+        },
+        {
+          path: 'search',
+          component: () => import('@/views/front/ProductSearch.vue')
+        },
+       
       ]
     },
    

@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-const { VITE_API, VITE_PATH } = import.meta.env
-console.log('1')
+const { VITE_API, VITE_PATH } = import.meta.env;
 
 export default defineStore('productsStore', {
     state: () => ({
@@ -17,6 +16,7 @@ export default defineStore('productsStore', {
             has_pre: false
         },
         product: {},
+        keywordList:[],
     }),
     actions: {
         async fetchProducts() {
@@ -33,10 +33,15 @@ export default defineStore('productsStore', {
                     }
                 })
                 this.getPagination(productsAll);
-                console.log(res)
             } catch (error) {
                 console.log(error)
             }
+        },
+        async searchProduct(keyword) {
+            await this.fetchProducts();
+            const searchProducts = this.productsAll.filter((item) => item.title.includes(keyword));
+            this.filteredProducts = searchProducts;
+            this.getPagination(searchProducts);
         },
         changeCategory(category) {
             if (category !== '所有商品') {
@@ -52,7 +57,6 @@ export default defineStore('productsStore', {
             }
         },
         getPagination(items, curPage = 1, perPage = 10) {
-            console.log(items, 'ite')
             const totalPage = Math.ceil(items.length / perPage);
             const startIndex = (curPage - 1) * perPage;
             const endIndex = curPage * perPage;
@@ -64,10 +68,13 @@ export default defineStore('productsStore', {
                 has_next: curPage < totalPage,
                 has_pre: curPage > 1
             };
-
+            console.log('test', paginationItems)
             this.products = [...paginationItems]
             
-        }
+        },
+        updateKeyword(keyword) {
+           this.keywordList = [...this.keywordList, keyword]
+        },
     },
 
 })
