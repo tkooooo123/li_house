@@ -48,7 +48,9 @@
 
                 </div>
                 <div class=" position-relative">
-                    <i class="bi bi-basket-fill nav-icon rounded-3 fs-5"></i>
+                    <RouterLink to="/cart">
+                        <i class="bi bi-basket-fill nav-icon rounded-3 fs-5"></i>
+                    </RouterLink>
                     <span class="position-absolute cartItem-quantity translate-middle badge rounded-pill bg-danger"
                         v-if="cartList.length">
                         {{ cartList.length }}
