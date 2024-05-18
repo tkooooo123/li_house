@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import toastStore from './toastStore';
 
 const { VITE_API, VITE_PATH } = import.meta.env;
+
+const toast = toastStore();
 
 export default defineStore('cartStore', {
     state: () => ({
@@ -11,6 +14,7 @@ export default defineStore('cartStore', {
         
     }),
     actions: {
+
         async fetchCart() {
             try {
                 const api = `${VITE_API}api/${VITE_PATH}/cart`;
@@ -28,9 +32,14 @@ export default defineStore('cartStore', {
                 const api = `${VITE_API}api/${VITE_PATH}/cart`;
                 const data = { product_id, qty }
                 const res = await axios.post(api, { data });
+                if(res.data.success) {
+                    toast.successToast(res.data.message);
                 await this.fetchCart();
+                } else {
+                    toast.errorToast(res.data.message)
+                }
             } catch (error) {
-                console.log(error);
+                toast.handleError()
             }
         }
     },
