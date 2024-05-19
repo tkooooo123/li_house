@@ -38,7 +38,7 @@ export default {
 @mixin getStepNums($num) {
     @for $i from 1 through $num {
         &:nth-child(#{$i}) .circle::after {
-            color: black;
+            color: white;
             position: absolute;
             top: 50%;
             left: 50%;

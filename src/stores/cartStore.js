@@ -11,7 +11,8 @@ export default defineStore('cartStore', {
         cartList: [],
         total: '',
         finalTotal: '',
-
+        orderId: '',
+        order: {}
     }),
     actions: {
 
@@ -19,7 +20,7 @@ export default defineStore('cartStore', {
             try {
                 const api = `${VITE_API}api/${VITE_PATH}/cart`;
                 const res = await axios.get(api);
-                if(res.data.success) {
+                if (res.data.success) {
                     this.cartList = res.data.data.carts;
                     this.total = res.data.data.total;
                     this.finalTotal = res.data.data.final_total;
@@ -75,7 +76,7 @@ export default defineStore('cartStore', {
             }
         },
         async updateCartItem(id, qty) {
-         
+
             const api = `${VITE_API}api/${VITE_PATH}/cart/${id}`
             const data = { product_id: id, qty }
             try {
@@ -105,18 +106,48 @@ export default defineStore('cartStore', {
             }
         },
         async submitOrder(user, message) {
-            try {   
+            try {
                 const api = `${VITE_API}api/${VITE_PATH}/order`
-                const res = await axios.post(api, { data: { user, message } })       
+                const res = await axios.post(api, { data: { user, message } })
                 if (res.data.success) {
-                    toast.successToast(res.data.message)   
-                    this.fetchCart();        
-                } else {          
+                    this.orderId = res.data.orderId
+                    toast.successToast(res.data.message)
+                } else {
                     toast.failToast(...res.data.message)
                 }
             } catch (error) {
                 toast.handleError()
             }
+        },
+        async fetchOrder(id) {
+            try {
+                const api = `${VITE_API}api/${VITE_PATH}/order/${id}`
+                const res = await axios.get(api)
+                if(res.data.success) {
+                    this.order = {...res.data.order}
+                } else {
+                    toast.failToast(res.data.message)
+                }
+               
+
+            } catch (error) {
+                toast.handleError()
+            }
+        },
+        async goToPay(id) {
+            try {
+                const api = `${VITE_API}api/${VITE_PATH}/pay/${id}`
+                const res = await axios.post(api)
+                if(res.data.success) {
+                    await this.fetchOrder(id)
+                    toast.successToast(res.data.message)
+                } else {
+                    toast.failToast(res.data.message)
+                }
+            } catch (error) {
+                toast.handleError()
+            }
+
         }
     },
 

@@ -94,10 +94,13 @@ export default {
     },
     methods: {
         ...mapActions(cartStore, [
-            'submitOrder'
+            'submitOrder',
+            'fetchCart'
         ]),
-        handleSubmit() {
-            this.submitOrder(this.user, this.message)
+        async handleSubmit() {
+            await this.submitOrder(this.user, this.message);
+            await this.fetchCart();
+             this.$router.push(`/cart/success/${this.orderId}`)
         },
         isPhone(value) {
             const phoneNumber = /^(09)[0-9]{8}$/
@@ -107,7 +110,8 @@ export default {
     computed: {
         ...mapState(cartStore, [
             'cartList',
-            'finalTotal'
+            'finalTotal',
+            'orderId'
         ])
     }
 }
