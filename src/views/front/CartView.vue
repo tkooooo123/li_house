@@ -6,10 +6,9 @@
             <div class="col-md-8 col-12">
                 <div class="d-flex justify-content-between">
                     <h2 class="fw-bold text-primary">購物車清單</h2>
-                    <button class="btn btn-outline-primary fw-bold delete-all" @click="openDeleteCartModal">全部刪除</button>
-                    <DeleteCartModal ref="deleteCartModal"
-                    @handle-delete="handleCartDelete"
-                    />
+                    <button class="btn btn-outline-primary fw-bold delete-all"
+                        @click="openDeleteCartModal">全部刪除</button>
+                    <DeleteCartModal ref="deleteCartModal" @handle-delete="handleCartDelete" />
                 </div>
                 <ul class="cart-list mt-3 p-0">
                     <li class="cart-item p-3 d-flex flex-column justify-content-center" v-for="item in cartList"
@@ -24,20 +23,19 @@
                                     <span class="fw-bold">NT${{ item.product.price }}</span>
                                 </div>
                             </div>
-                            <button class="btn border-0"  @click="deleteCartItem(item.id)"><i
+                            <button class="btn border-0" @click="openDeleteItemModal(item)"><i
                                     class="bi bi-trash3-fill"></i></button>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center mt-3">
-                            <QuantityBtn 
-                            :item="item"
-                            />
+                            <QuantityBtn :item="item" />
 
                             <strong class="ps-5">小計 ${{ item.product.price * item.qty }}</strong>
 
                         </div>
 
                     </li>
+                    <DeleteItemModal ref="deleteItemModal" :item="tempItem" @handle-delete="handleItemDelete"/>
                 </ul>
             </div>
             <div class="col-md-4 col-12">
@@ -94,13 +92,20 @@ import { mapActions, mapState } from 'pinia';
 import cartStore from '@/stores/cartStore';
 import Stepper from '@/components/front/cart/CartStepper.vue';
 import QuantityBtn from '@/components/front/cart/QuantityBtn.vue';
-import DeleteCartModal from '@/components/front/cart/DeleteCartModal.vue'
+import DeleteCartModal from '@/components/front/cart/DeleteCartModal.vue';
+import DeleteItemModal from '@/components/front/cart/DeleteItemModal.vue';
 
 export default {
     components: {
         Stepper,
         QuantityBtn,
         DeleteCartModal,
+        DeleteItemModal,
+    },
+    data() {
+        return {
+            tempItem: ''
+        }
     },
     created() {
         this.fetchCart();
@@ -113,13 +118,20 @@ export default {
             'updateCartItem'
         ]),
         openDeleteCartModal() {
-            console.log( this.$refs.deleteCartModal,1)
             this.$refs.deleteCartModal.showModal()
         },
         handleCartDelete() {
             this.deleteCart();
             this.$refs.deleteCartModal.hideModal()
-        }
+        },
+        openDeleteItemModal(item) {
+            this.tempItem = {...item}
+            this.$refs.deleteItemModal.showModal()
+        },
+        handleItemDelete(id) {
+            this.deleteCartItem(id);
+            this.$refs.deleteItemModal.hideModal()
+        },
     },
     computed: {
         ...mapState(cartStore, [
