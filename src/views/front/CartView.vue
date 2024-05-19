@@ -6,7 +6,10 @@
             <div class="col-md-8 col-12">
                 <div class="d-flex justify-content-between">
                     <h2 class="fw-bold text-primary">購物車清單</h2>
-                    <button class="btn btn-outline-primary fw-bold delete-all" @click="deleteCart">全部刪除</button>
+                    <button class="btn btn-outline-primary fw-bold delete-all" @click="openDeleteCartModal">全部刪除</button>
+                    <DeleteCartModal ref="deleteCartModal"
+                    @handle-delete="handleCartDelete"
+                    />
                 </div>
                 <ul class="cart-list mt-3 p-0">
                     <li class="cart-item p-3 d-flex flex-column justify-content-center" v-for="item in cartList"
@@ -91,11 +94,13 @@ import { mapActions, mapState } from 'pinia';
 import cartStore from '@/stores/cartStore';
 import Stepper from '@/components/front/cart/CartStepper.vue';
 import QuantityBtn from '@/components/front/cart/QuantityBtn.vue';
+import DeleteCartModal from '@/components/front/cart/DeleteCartModal.vue'
 
 export default {
     components: {
         Stepper,
-        QuantityBtn
+        QuantityBtn,
+        DeleteCartModal,
     },
     created() {
         this.fetchCart();
@@ -107,6 +112,14 @@ export default {
             'deleteCart',
             'updateCartItem'
         ]),
+        openDeleteCartModal() {
+            console.log( this.$refs.deleteCartModal,1)
+            this.$refs.deleteCartModal.showModal()
+        },
+        handleCartDelete() {
+            this.deleteCart();
+            this.$refs.deleteCartModal.hideModal()
+        }
     },
     computed: {
         ...mapState(cartStore, [
