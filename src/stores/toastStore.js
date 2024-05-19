@@ -21,7 +21,7 @@ export default defineStore('toastStore', {
                 content: message
             });
         },
-        errorToast(message) {
+        failToast(message) {
             this.addMessage({
                 style: 'error',
                 content: message
