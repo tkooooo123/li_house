@@ -19,10 +19,13 @@ export default defineStore('cartStore', {
             try {
                 const api = `${VITE_API}api/${VITE_PATH}/cart`;
                 const res = await axios.get(api);
-                console.log(res.data.data)
-                this.cartList = res.data.data.carts;
-                this.total = res.data.data.total;
-                this.finalTotal = res.data.data.final_total;
+                if(res.data.success) {
+                    this.cartList = res.data.data.carts;
+                    this.total = res.data.data.total;
+                    this.finalTotal = res.data.data.final_total;
+                } else {
+                    toast.failToast(res.data.message)
+                }
             } catch (error) {
                 toast.handleError()
             }
@@ -96,6 +99,20 @@ export default defineStore('cartStore', {
                     this.fetchCart()
                 } else {
                     toast.failToast(res.data.message)
+                }
+            } catch (error) {
+                toast.handleError()
+            }
+        },
+        async submitOrder(user, message) {
+            try {   
+                const api = `${VITE_API}api/${VITE_PATH}/order`
+                const res = await axios.post(api, { data: { user, message } })       
+                if (res.data.success) {
+                    toast.successToast(res.data.message)   
+                    this.fetchCart();        
+                } else {          
+                    toast.failToast(...res.data.message)
                 }
             } catch (error) {
                 toast.handleError()

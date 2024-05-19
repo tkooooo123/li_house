@@ -75,9 +75,8 @@
                     </tfoot>
                 </table>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-outline-primary fw-bold">繼續購物</button>
-
-                    <button type="button" class="btn btn-primary fw-bold text-white">確認結帳</button>
+                    <RouterLink class="btn btn-outline-secondary fw-bold rounded-pill" to="/products">繼續購物</RouterLink>
+                    <RouterLink class="btn btn-primary fw-bold text-white rounded-pill" to="/cart/checkout">確認結帳</RouterLink>
                 </div>
             </div>
         </div>

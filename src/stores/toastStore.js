@@ -7,7 +7,7 @@ export default defineStore('toastStore', {
     }),
     actions: {
         handleError() {
-            this.pushMessage({
+            this.addMessage({
                 style: 'error',
                 content: '發生錯誤，請稍後再試！'
               })
