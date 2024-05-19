@@ -43,10 +43,13 @@
                 <div class=" d-flex coupon-group flex-lg-row justify-content-between pt-3">
                     <input type="text"
                         class="coupon-input border border-primary rounded-pill fw-bold py-lg-0 ps-3 me-lg-3"
-                        placeholder="請輸入優惠碼">
+                        placeholder="請輸入優惠碼" v-model="coupon">
                     <button type="button"
-                        class="btn btn-primary text-white rounded-pill fw-bold mt-3 mt-lg-0">套用</button>
+                        class="btn btn-primary text-white rounded-pill fw-bold mt-3 mt-lg-0"
+                        @click="useCoupon(coupon)"
+                        >套用</button>
                 </div>
+                <p class="m-2 text-primary" v-if="cartList[0].coupon"><strong>已套用優惠碼：{{ cartList[0].coupon?.code }}</strong></p>
                 <table class="table mt-3 text-end fw-bold">
                     <tbody>
                         <tr>
@@ -59,13 +62,15 @@
                         </tr>
                         <tr>
                             <td class="text-start">優惠折抵</td>
-                            <td>- NT$</td>
+                            <td>- NT$ 
+                                {{ total - Math.ceil(finalTotal) }}
+                            </td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
                             <td class="text-start">總金額</td>
-                            <td>NT$ {{ finalTotal }}</td>
+                            <td>NT$ {{ Math.ceil(finalTotal) }}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -104,18 +109,21 @@ export default {
     },
     data() {
         return {
-            tempItem: ''
+            tempItem: '',
+            coupon: ''
         }
     },
     created() {
         this.fetchCart();
+        this.coupon = 'PET888'
     },
     methods: {
         ...mapActions(cartStore, [
             'fetchCart',
             'deleteCartItem',
             'deleteCart',
-            'updateCartItem'
+            'updateCartItem',
+            'useCoupon'
         ]),
         openDeleteCartModal() {
             this.$refs.deleteCartModal.showModal()
@@ -137,7 +145,8 @@ export default {
         ...mapState(cartStore, [
             'cartList',
             'total',
-            'finalTotal'
+            'finalTotal',
+            'couponCode'
         ])
     }
 

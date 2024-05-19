@@ -10,7 +10,7 @@ export default defineStore('cartStore', {
     state: () => ({
         cartList: [],
         total: '',
-        finalTotal: ''
+        finalTotal: '',
 
     }),
     actions: {
@@ -44,7 +44,6 @@ export default defineStore('cartStore', {
         },
         async deleteCartItem(id) {
             try {
-                console.log('de')
                 const api = `${VITE_API}api/${VITE_PATH}/cart/${id}`
                 const res = await axios.delete(api)
                 if (res.data.success) {
@@ -73,19 +72,33 @@ export default defineStore('cartStore', {
             }
         },
         async updateCartItem(id, qty) {
-            console.log(id, qty)
+         
             const api = `${VITE_API}api/${VITE_PATH}/cart/${id}`
             const data = { product_id: id, qty }
             try {
-              const res = await axios.put(api, { data })
-              if (res.data.success) {
-                await this.fetchCart()
-                toast.successToast(res.data.message)
-              } else {
-                toast.failToast(res.data.message)
-              }
+                const res = await axios.put(api, { data })
+                if (res.data.success) {
+                    await this.fetchCart()
+                    toast.successToast(res.data.message)
+                } else {
+                    toast.failToast(res.data.message)
+                }
             } catch (error) {
-              toast.handleError()
+                toast.handleError()
+            }
+        },
+        async useCoupon(coupon) {
+            try {
+                const api = `${VITE_API}api/${VITE_PATH}/coupon`;
+                const res = await axios.post(api, { data: { code: coupon } })
+                if (res.data.success) {
+                    toast.successToast(res.data.message)
+                    this.fetchCart()
+                } else {
+                    toast.failToast(res.data.message)
+                }
+            } catch (error) {
+                toast.handleError()
             }
         }
     },
