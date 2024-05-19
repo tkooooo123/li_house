@@ -8,18 +8,22 @@
             <div class="toggle-menu bg-primary d-md-none">
                 <ul class="mt-3">
                     <li>
-                        <RouterLink to="" class="nav-link ms-2">
+                        <RouterLink to="/brandstory" class="nav-link ms-2"
+                        @click="switchToggle"
+                        >
                             品牌故事
                         </RouterLink>
                     </li>
                     <li>
-                        <RouterLink to="" class="nav-link ms-2">
+                        <RouterLink to="/articles" class="nav-link ms-2"
+                        @click="switchToggle">
                             最新消息
                         </RouterLink>
                     </li>
                     <li>
-                        <RouterLink to="" class="nav-link ms-2">
-                            全部商品
+                        <RouterLink to="products" class="nav-link ms-2"
+                        @click="switchToggle">
+                            商品一覽
                         </RouterLink>
                     </li>
                     <li>
@@ -35,8 +39,8 @@
                 </RouterLink>
                 <div class="d-none d-md-flex align-items-center ms-3">
                     <RouterLink class="nav-link fs-5 p-2 rounded-2" to="/articles">最新消息</RouterLink>
-                    <RouterLink class="nav-link fs-5 p-2 rounded-2" to="">品牌故事</RouterLink>
-                    <RouterLink class="nav-link fs-5 p-2 rounded-2" to="/products">全部商品</RouterLink>
+                    <RouterLink class="nav-link fs-5 p-2 rounded-2" to="/brandstory">品牌故事</RouterLink>
+                    <RouterLink class="nav-link fs-5 p-2 rounded-2" to="/products">商品一覽</RouterLink>
                 </div>
             </div>
             <div class="d-flex align-items-center">
