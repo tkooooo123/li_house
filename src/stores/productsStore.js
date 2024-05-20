@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import toastStore from './toastStore';
+
 const { VITE_API, VITE_PATH } = import.meta.env;
+const toast = toastStore();
 
 export default defineStore('productsStore', {
     state: () => ({
@@ -16,11 +19,12 @@ export default defineStore('productsStore', {
             has_pre: false
         },
         product: {},
-        keywordList:[],
+        keywordList: [],
     }),
     actions: {
         async fetchProducts() {
             try {
+                console.log('ss')
                 const api = `${VITE_API}api/${VITE_PATH}/products/all`;
                 const res = await axios.get(api);
                 const productsAll = res.data.products;
@@ -48,12 +52,12 @@ export default defineStore('productsStore', {
                 this.categorySelected = category;
                 const products = this.productsAll.filter((item) => item.category === category);
                 this.filteredProducts = products;
-               this.getPagination(products);
+                this.getPagination(products);
             } else {
                 this.categorySelected = '所有商品';
                 this.filteredProducts = this.productsAll;
                 this.getPagination(this.productsAll)
-                
+
             }
         },
         getPagination(items, curPage = 1, perPage = 10) {
@@ -68,13 +72,25 @@ export default defineStore('productsStore', {
                 has_next: curPage < totalPage,
                 has_pre: curPage > 1
             };
-            console.log('test', paginationItems)
             this.products = [...paginationItems]
-            
+
         },
         updateKeyword(keyword) {
-           this.keywordList = [...this.keywordList, keyword]
+            this.keywordList = [...this.keywordList, keyword]
         },
+        async fetchProduct(id) {
+            try {
+                const api = `${VITE_API}api/${VITE_PATH}/product/${id}`;
+                const res = await axios.get(api)
+                if (res.data.success) {
+                    this.product = res.data.product
+                } else {
+                    toast.failToast(res.data.message)
+                }
+            } catch (error) {
+                toast.handleError()
+            }
+        }
     },
 
 })
