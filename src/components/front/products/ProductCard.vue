@@ -4,7 +4,10 @@
                     <img class="product-img" :src="product.imageUrl" :alt="product.title">
                     <div class="d-flex flex-column flex-grow-1 p-2">
                         <h4 class="mt-2 fw-bold flex-grow-1 text-black">{{ product.title }}</h4>
-                        <p class="fw-bold text-black"> NT${{ product.price }}</p>
+                        <div>
+                            <span class="fw-bold text-black text-decoration-line-through">NT${{ product.origin_price }}</span>
+                            <span class="fw-bold text-danger ps-3">NT${{ product.price }}</span>
+                        </div>
                         <button class="product-btn btn btn-outline-primary fw-bold w-100"
                             @click="addToCart(product.id)"> 加入購物車</button>
                     </div>
