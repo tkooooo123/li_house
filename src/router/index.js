@@ -20,6 +20,10 @@ const router = createRouter({
           component: () => import('@/views/front/BrandStory.vue')
         },
         {
+          path: 'privacy',
+          component: () => import('@/views/front/PrivacyPolicy.vue')
+        },
+        {
           path: 'products',
           component: () => import('@/views/front/ProductView.vue')
         },
