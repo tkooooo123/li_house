@@ -15,10 +15,8 @@
         </div>
       </div>
       <HomeActivity />
-
-      <div class="container subscribe pt-5">
-        123
-      </div>
+      <HomeSubscribe />
+     
 
     </div>
 
@@ -31,13 +29,15 @@ import BannerSwiper from '@/components/front/home/BannerSwiper.vue'
 import HomeCategory from '@/components/front/home/HomeCategory.vue'
 import HomeLatest from '@/components/front/home/HomeLatest.vue'
 import HomeActivity from '@/components/front/home/HomeActivity.vue'
+import HomeSubscribe from '@/components/front/home/HomeSubscribe.vue'
 
 export default {
   components: {
     BannerSwiper,
     HomeCategory,
     HomeLatest,
-    HomeActivity
+    HomeActivity,
+    HomeSubscribe,
   },
   created() {
     this.fetchProducts()
