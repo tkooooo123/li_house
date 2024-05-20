@@ -14,7 +14,7 @@
           <h3 class="fw-bold text-white"></h3>
         </div>
       </div>
-      
+      <HomeActivity />
 
       <div class="container subscribe pt-5">
         123
@@ -30,12 +30,14 @@ import productsStore from '@/stores/productsStore'
 import BannerSwiper from '@/components/front/home/BannerSwiper.vue'
 import HomeCategory from '@/components/front/home/HomeCategory.vue'
 import HomeLatest from '@/components/front/home/HomeLatest.vue'
+import HomeActivity from '@/components/front/home/HomeActivity.vue'
 
 export default {
   components: {
     BannerSwiper,
     HomeCategory,
-    HomeLatest
+    HomeLatest,
+    HomeActivity
   },
   created() {
     this.fetchProducts()
