@@ -6,7 +6,7 @@
                 <ul class="p-0">
                     <li class="category-item py-2" v-for="category in categoryList" :key="category">
                         <span class="fw-bold rounded-2" :class="{ active: categorySelected === category }"
-                            @click="changeCategory(category)">{{ category }}
+                            @click="test(category)">{{ category }}
 
                         </span>
                     </li>
@@ -42,8 +42,12 @@ export default {
         ProductCard,
     },
     created() {
-        this.fetchProducts();
+        if(this.$route.query.category) {
+            this.changeCategory(this.$route.query.category)
+        } else {
+            this.fetchProducts();
         this.getPagination(this.products)
+        }
     },
     methods: {
         ...mapActions(productsStore, [
@@ -53,7 +57,11 @@ export default {
         ]),
         ...mapActions(cartStore, [
             'addToCart',
-        ])
+        ]),
+        test(item) {
+            this.changeCategory(item)
+            this.$router.push(`/products?category=${item}`)
+        }
     },
     computed: {
         ...mapState(productsStore, [

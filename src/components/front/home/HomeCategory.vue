@@ -1,25 +1,30 @@
 <template>
     <div class="container">
         <div class="home-category">
-            <h3 class="py-3 fw-bold text-primary text-center fs-2">商品分類</h3>
+            <h3 class="py-3 fw-bold text-primary text-center fs-2">熱門分類</h3>
             <ul class="home-category-list row g-3 p-0">
-              
-
-                 <RouterLink to="/products" class="col-md-3 col-sm-6 text-decoration-none"
-                 v-for="item in categoryList"
-                 :key="item.id"
-                 >
-                    <li class="home-category-list-item">
-                        <span className="home-category-list-item-name">{{item.name}}</span>
+                <li class="col-md-3 col-sm-6 text-decoration-none"
+                v-for="item in categoryList" :key="item.id"
+                >
+                    <RouterLink :to="{path:'products', query: { category: item.name}}">
+                        <div class="home-category-list-item">
+                            <span className="home-category-list-item-name">{{ item.name }}</span>
                         <img className="home-category-list-item-img" :src="item.imageUrl" :alt="item.name" />
-                    </li>
-                </RouterLink>
-                <RouterLink to="/products" class="col-md-3 col-sm-6 text-decoration-none">
-                    <li class="home-category-list-item">
-                        <span className="home-category-list-item-name">其他</span>
-                        <img className="home-category-list-item-img" src="https://i.imgur.com/Zy3zGNv.jpeg" alt="其他" />
-                    </li>
-                </RouterLink>
+                        </div>
+                    </RouterLink>
+                </li>
+
+
+                <li class="col-md-3 col-sm-6 text-decoration-none">
+                    <RouterLink to="/products">
+                        <div class="home-category-list-item">
+                            <span className="home-category-list-item-name">其他</span>
+                            <img className="home-category-list-item-img" src="https://i.imgur.com/Zy3zGNv.jpeg"
+                                alt="其他" />
+                        </div>
+                    </RouterLink>
+                </li>
+
             </ul>
         </div>
     </div>
