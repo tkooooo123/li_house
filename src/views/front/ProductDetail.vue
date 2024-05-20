@@ -5,13 +5,10 @@
                 <div className="product-img-wrapper">
                     <img className="product-img" :src="product.imageUrl" :alt="product.title" />
                 </div>
-                
+
                 <div class="d-flex  flex-md-column text-nowrap overflow-hidden me-md-3 me-0 mt-3 mt-md-0">
-                    <div class="bg-light m-1"
-                    v-for="img in product.imagesUrl"
-                    :key="img"
-                    >
-                  <img class="product-images" :src="img" alt="商品其他圖片">
+                    <div class="bg-light m-1" v-for="img in product.imagesUrl" :key="img">
+                        <img class="product-images" :src="img" alt="商品其他圖片">
                     </div>
                 </div>
             </div>
@@ -39,7 +36,9 @@
         </div>
         <hr>
         <h3 class="text-primary text-center fw-bold">相關商品</h3>
- 
+        <div class="py-5">
+            <ProductSwiper :products="relativeProducts" />
+        </div>
     </div>
 </template>
 
@@ -47,18 +46,17 @@
 import { mapActions, mapState } from 'pinia'
 import productsStore from '@/stores/productsStore'
 import QuantityBtn from '@/components/front/products/QuantityBtn.vue'
-
+import ProductSwiper from '@/components/front/products/ProductSwiper.vue'
 
 export default {
     data() {
         return {
             qty: 1,
-            relativeProducts: this.productsAll
         }
     },
     components: {
         QuantityBtn,
-
+        ProductSwiper
     },
     created() {
         this.fetchProduct(this.$route.params.productId);
@@ -69,18 +67,30 @@ export default {
     methods: {
         ...mapActions(productsStore, [
             'fetchProduct',
-            
+
         ]),
         getQty(num) {
             this.qty = num
         },
-      
+
     },
     computed: {
         ...mapState(productsStore, [
             'product',
-            'productsAll'
-        ])
+            'productsAll',
+            'relativeProducts'
+        ]),
+        id() {
+            return this.$route.params.productId
+        },
+    },
+    watch: {
+        id(newId, oldId) {
+            console.log(oldId, 1)
+            if (newId !== oldId) {
+                this.fetchProduct(newId);
+            }
+        }
     }
 }
 </script>
@@ -92,10 +102,12 @@ export default {
     object-fit: cover;
     aspect-ratio: 1;
 }
+
 .product-images {
     width: 100px;
     aspect-ratio: 1;
 }
+
 .product-content {
     white-space: pre-line;
 }

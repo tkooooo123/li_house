@@ -10,6 +10,7 @@ export default defineStore('productsStore', {
         products: [],
         productsAll: [],
         filteredProducts: [],
+        relativeProducts: [],
         categorySelected: '所有商品',
         categoryList: ['所有商品'],
         pagination: {
@@ -24,7 +25,6 @@ export default defineStore('productsStore', {
     actions: {
         async fetchProducts() {
             try {
-                console.log('ss')
                 const api = `${VITE_API}api/${VITE_PATH}/products/all`;
                 const res = await axios.get(api);
                 const productsAll = res.data.products;
@@ -80,12 +80,17 @@ export default defineStore('productsStore', {
         },
         async fetchProduct(id) {
             try {
-                const api = `${VITE_API}api/${VITE_PATH}/product/${id}`;
-                const res = await axios.get(api)
-                if (res.data.success) {
-                    this.product = res.data.product
+                const productApi = `${VITE_API}api/${VITE_PATH}/product/${id}`;
+                const productsAllApi = `${VITE_API}api/${VITE_PATH}/products/all`;
+                const [productRes, productsAllRes] = await Promise.all([axios.get(productApi), axios.get(productsAllApi)])
+                
+                
+                if (productRes.data.success) {
+                    this.product = productRes.data.product
+                    this.productsAll = productsAllRes.data.products
+                    this.relativeProducts = productsAllRes.data.products.filter((item) => item.category === this.product.category)
                 } else {
-                    toast.failToast(res.data.message)
+                    toast.failToast(productRes.data.message)
                 }
             } catch (error) {
                 toast.handleError()
