@@ -28,6 +28,10 @@ const router = createRouter({
           component: () => import('@/views/front/ContactUs.vue')
         },
         {
+          path: 'faq',
+          component: () => import('@/views/front/FAQView.vue')
+        },
+        {
           path: 'products',
           component: () => import('@/views/front/ProductView.vue')
         },
