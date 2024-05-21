@@ -24,6 +24,10 @@ const router = createRouter({
           component: () => import('@/views/front/PrivacyPolicy.vue')
         },
         {
+          path: 'contactus',
+          component: () => import('@/views/front/ContactUs.vue')
+        },
+        {
           path: 'products',
           component: () => import('@/views/front/ProductView.vue')
         },
