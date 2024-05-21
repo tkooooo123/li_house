@@ -9,7 +9,7 @@
                             <span class="fw-bold text-danger ps-3">NT${{ product.price }}</span>
                         </div>
                         <button class="product-btn btn btn-outline-primary fw-bold w-100"
-                            @click="addToCart(product.id)"> 加入購物車</button>
+                            @click.prevent="addToCart(product.id)"> 加入購物車</button>
                     </div>
                 </div>
             </RouterLink>
