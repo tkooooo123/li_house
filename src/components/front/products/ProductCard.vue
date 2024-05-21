@@ -1,6 +1,6 @@
 <template>
    <RouterLink class="text-decoration-none" :to="`/product/${product.id}`">
-                <div class="product-card border border-primary rounded-2 h-100 d-flex flex-column">
+                <div class="product-card border border-primary rounded-2 h-100 d-flex flex-column bg-white">
                     <img class="product-img" :src="product.imageUrl" :alt="product.title">
                     <div class="d-flex flex-column flex-grow-1 p-2">
                         <h4 class="mt-2 fw-bold flex-grow-1 text-black">{{ product.title }}</h4>

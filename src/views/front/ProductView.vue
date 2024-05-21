@@ -1,9 +1,16 @@
 <template>
     <div class="container pt-mh">
-        <h1 class="pt-4">商品一覽</h1>
-        <div class="row">
+        <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between mt-5">
+                <p class="fs-5 fw-bold m-0">
+                    <RouterLink to="/" class="text-secondary">首頁</RouterLink>
+                    <span> / </span>
+                    <RouterLink to="" class="text-black">商品一覽</RouterLink>
+                </p>
+                <h1 class="fw-bold mt-md-0 mt-3">商品一覽</h1>
+            </div>
+        <div class="row mt-3 mb-5">
             <div class="col-md-3">
-                <ul class="p-0">
+                <ul class="p-0 d-flex flex-md-column">
                     <li class="category-item py-2" v-for="category in categoryList" :key="category">
                         <span class="fw-bold rounded-2" :class="{ active: categorySelected === category }"
                             @click="test(category)">{{ category }}

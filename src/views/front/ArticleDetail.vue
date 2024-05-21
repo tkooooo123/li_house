@@ -1,8 +1,16 @@
 <template>
-    <div class="container pt-5">
+    <div class="container pt-mh">
         <div class="row justify-content-center">
-            <div class="col-md-9 mt-5">
-                <h1 className="article-title">《{{ article.title }}》</h1>
+            <p class="fs-5 fw-bold m-0 text-md-end text-start mt-5">
+                    <RouterLink to="/" class="text-secondary">首頁</RouterLink>
+                    <span> / </span>
+                    <RouterLink to="/articles" class="text-secondary">最新消息</RouterLink>
+                    <span> / </span>
+                    <RouterLink to="/articles" class="text-black">{{ article.title }}</RouterLink>
+                </p>
+            <div class="col-md-9">
+                <h1 class="article-title fw-bold mt-md-2 mt-3">《{{ article.title }}》</h1>
+           
                 <div>
                     <span className="badge text-dark m-1 fs-6"><i className="bi bi-pencil"></i>
                         {{ article.author }}</span>

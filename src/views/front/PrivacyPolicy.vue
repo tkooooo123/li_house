@@ -1,5 +1,5 @@
 <template>
-    <div class="container pt-5">
+    <div class="container pt-mh">
         <h1 class="pt-5 text-primary text-center fw-bold">隱私權政策</h1>
         <p class="mt-5">
             本公司十分重視您的隱私權保護，將依個人資料保護法及本隱私權政策蒐集、處理及利用您的個人資料，並提供您對個人資料權利之行使與保護。若您不同意本隱私權政策之全部或部份者，請您停止使用本網站服務。<br />

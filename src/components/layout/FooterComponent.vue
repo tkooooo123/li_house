@@ -12,7 +12,7 @@
                         <div class="col-md-4 col-6">
                             <h4 class="fw-bold text-white">顧客服務</h4>
                             <ul class="d-flex flex-column p-0">
-                                <RouterLink to="/frequencely_asked_questions" class="nav-item fw-bold">常見問題</RouterLink>
+                                <RouterLink to="/faq" class="nav-item fw-bold">常見問題</RouterLink>
                                 <RouterLink to="/privacy" class="nav-item fw-bold">隱私權政策</RouterLink>
                             </ul>
                         </div>

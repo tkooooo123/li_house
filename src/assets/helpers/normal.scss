@@ -1,0 +1,31 @@
+body {
+	background-color: #f6f6f6;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+}
+
+a {
+	text-decoration: none;
+}
+
+.pt-mh {
+	padding-top: 66px;
+	min-height: calc( 100vh - 206px);
+}
+
+.btn-primary {
+	font-weight: bold;
+	color: white;
+	 &:hover, &:active:focus	{
+		color: white;
+	 }
+}
+
+.form-label {
+	font-weight: bold;
+}
+

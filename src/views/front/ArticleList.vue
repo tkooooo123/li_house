@@ -1,7 +1,14 @@
 <template>
     <div class="container pt-mh">
-        <div class="row">
-            <h1 class="pt-5 fw-bold">最新消息</h1>
+        <div class="row mb-5 mt-md-5 mt-3">
+            <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
+                <p class="fs-5 fw-bold m-0">
+                    <RouterLink to="/" class="text-secondary">首頁</RouterLink>
+                    <span> / </span>
+                    <RouterLink to="/articles" class="text-black">最新消息</RouterLink>
+                </p>
+                <h1 class="fw-bold mt-md-0 mt-3">最新消息</h1>
+            </div>
             <div class="col-lg-4 mt-3" v-for="article in articleList" :key="article.id">
                 <RouterLink :to="{ path: `/article/${article.id}` }">
                     <div class="card">
@@ -17,7 +24,7 @@
                                 <span className="badge text-dark m-1 p-1"><i className="bi bi-calendar3"></i> {{ new
                 Date(article.create_at).toLocaleDateString() }}</span>
 
-                            </div><span className="bg-secondary badge text-dark p-1 m-1" v-for="tag in article.tag"
+                            </div><span className="bg-primary badge text-dark p-1 m-1" v-for="tag in article.tag"
                                 :key="tag"><i className="bi bi-tag"></i>{{ tag }}</span>
 
                         </div>

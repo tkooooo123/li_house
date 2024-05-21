@@ -1,6 +1,13 @@
 <template>
     <div class="container pt-mh">
-        <div class="row pt-5 g-3">
+        <p class="fs-5 fw-bold mt-5">
+                    <RouterLink to="/" class="text-secondary">首頁</RouterLink>
+                    <span> / </span>
+                    <RouterLink to="/products" class="text-secondary">商品一覽</RouterLink>
+                    <span> / </span>
+                    <RouterLink to="" class="text-black">{{product.title}}</RouterLink>
+                </p>
+        <div class="row pt-3 g-3">
             <div class="col-md-7 d-md-flex flex-sm-row-reverse justify-content-between">
                 <div className="product-img-wrapper">
                     <img className="product-img" :src="product.imageUrl" :alt="product.title" />
