@@ -40,7 +40,11 @@
 
 <script>
 import axios from "axios";
+import statusStore from "@/stores/statusStore";
+import toastStore from "@/stores/toastStore";
 const { VITE_API, VITE_PATH } = import.meta.env;
+const status = statusStore();
+const toast = toastStore();
 
 export default {
     data() {
@@ -54,20 +58,27 @@ export default {
     methods: {
         async fetchArticle(id) {
             try {
+                status.isLoading = true;
                 const api = `${VITE_API}api/${VITE_PATH}/article/${id}`;
                 const res = await axios.get(api);
-                this.article = res.data.article;
-
-                //取得前後文章
-                const articlesRes = await axios.get(`${VITE_API}api/${VITE_PATH}/articles`)
-                articlesRes.data.articles.forEach((item, i) => {
-                    if (item.id === id) {
-                        this.prevArticle = articlesRes.data.articles[i - 1];
-                        this.nextArticle = articlesRes.data.articles[i + 1];
-                    }
-                })
+                if (res.data.article) {
+                    this.article = res.data.article;
+                    status.isLoading = false;
+                    //取得前後文章
+                    const articlesRes = await axios.get(`${VITE_API}api/${VITE_PATH}/articles`)
+                    articlesRes.data.articles.forEach((item, i) => {
+                        if (item.id === id) {
+                            this.prevArticle = articlesRes.data.articles[i - 1];
+                            this.nextArticle = articlesRes.data.articles[i + 1];
+                        }
+                    })
+                } else {
+                    toast.failToast(res.data.message)
+                    status.isLoading = false;
+                }
             } catch (error) {
-                console.log(error);
+                toast.handleError();
+                status.isLoading = false;
             }
         },
     },

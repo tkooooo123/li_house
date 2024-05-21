@@ -1,5 +1,5 @@
 <template>
-    <div class="container pt-5">
+    <div class="container pt-mh">
         <div class="row">
             <h1 class="pt-5 fw-bold">最新消息</h1>
             <div class="col-lg-4 mt-3" v-for="article in articleList" :key="article.id">
@@ -31,7 +31,11 @@
 
 <script>
 import axios from 'axios';
+import statusStore from '@/stores/statusStore';
+import toastStore from '@/stores/toastStore';
 const { VITE_API, VITE_PATH } = import.meta.env;
+const status = statusStore();
+const toast = toastStore();
 
 export default {
     data() {
@@ -42,11 +46,19 @@ export default {
     methods: {
         async fetchArticleList() {
             try {
+                status.isLoading = true;
                 const api = `${VITE_API}api/${VITE_PATH}/articles`
                 const res = await axios.get(api);
-                this.articleList = res.data.articles;
+                if (res.data.articles) {
+                    this.articleList = res.data.articles;
+                    status.isLoading = false;
+                } else {
+                    toast.failToast(res.data.message);
+                    status.isLoading = false;
+                }
             } catch (error) {
-                console.log(error);
+                toast.handleError();
+                status.isLoading = false;
             }
         }
     },
