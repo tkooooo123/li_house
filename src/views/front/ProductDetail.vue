@@ -23,8 +23,11 @@
                     <div class="col-lg-6 col-md-12 col-sm-6">
                         <QuantityBtn :quantity="1" @change-quantity="getQty" />
                     </div>
-                    <div class="col-lg-6 col-md-12 col-sm-6 mt-lg-0 mt-md-3 mt-sm-0 mt-3"><button
-                            class="btn btn-primary w-100">加入購物車</button></div>
+                    <div class="col-lg-6 col-md-12 col-sm-6 mt-lg-0 mt-md-3 mt-sm-0 mt-3">
+                        <button class="btn btn-primary w-100"
+                        @click="addToCart(product.id, qty)"
+                        >加入購物車</button>
+                    </div>
                 </div>
                 <hr>
 
@@ -47,6 +50,7 @@ import { mapActions, mapState } from 'pinia'
 import productsStore from '@/stores/productsStore'
 import QuantityBtn from '@/components/front/products/QuantityBtn.vue'
 import ProductSwiper from '@/components/front/products/ProductSwiper.vue'
+import cartStore from '@/stores/cartStore'
 
 export default {
     data() {
@@ -67,7 +71,9 @@ export default {
     methods: {
         ...mapActions(productsStore, [
             'fetchProduct',
-
+        ]),
+        ...mapActions(cartStore, [
+            'addToCart'
         ]),
         getQty(num) {
             this.qty = num
