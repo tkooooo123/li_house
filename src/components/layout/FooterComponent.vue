@@ -21,7 +21,7 @@
                             <ul class="d-flex flex-column p-0">
                                 <span class="fw-bold">營業時間： 10:00 - 20:00</span>
                                 <span class="fw-bold">電話：04-2345-6789</span>
-                                <span class="fw-bold">Email： bakery_ec@gmail.com</span>
+                                <span class="fw-bold">Email： li_house@gmail.com</span>
                                 
                             </ul>
                         </div>
