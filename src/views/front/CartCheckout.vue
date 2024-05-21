@@ -1,8 +1,8 @@
 <template>
-    <div class="container pt-5">
+    <div class="container pt-mh">
         <CartStepper :stepper="2" />
-        <div class="row py-5 g-5">
-            <div class="col-lg-8 ">
+        <div class="row py-5 g-3">
+            <div class="col-lg-8 col-md-7">
                 <div class="d-flex justify-content-between">
                     <RouterLink class="btn btn-outline-secondary fw-bold rounded-pill" to="/cart">返回購物車</RouterLink>
                     <h2 class="text-primary fw-bold fs-4">訂單金額：NT$ {{ Math.ceil(finalTotal) }}</h2>
@@ -28,7 +28,7 @@
 
                 </ul>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4 col-md-5">
                 <h2 class="fw-bold fs-4">訂購資訊</h2>
                 <VForm v-slot="{ errors }" @submit="handleSubmit">
                     <div class="mb-3">

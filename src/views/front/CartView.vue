@@ -1,7 +1,7 @@
 <template>
     <div class="container pt-mh">
 
-        <div class="row py-5 g-5" v-if="cartList.length">
+        <div class="row py-5 g-3" v-if="cartList.length">
             <Stepper :stepper="1" />
             <div class="col-md-8 col-12">
                 <div class="d-flex justify-content-between">

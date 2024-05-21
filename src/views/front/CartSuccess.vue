@@ -1,10 +1,7 @@
 <template>
-    <div class="container pt-5">
-
-
-
+    <div class="container pt-mh">
         <div class="row justify-content-center">
-            <div v-if="order.is_paid" class="col-md-8 text-center ">
+            <div v-if="order.is_paid" class="col-md-8 text-center py-5">
                 <div class="p-5 border border-primary mt-5 rounded-5 ">
                     <p className="check-logo mx-2">
                     <i className="bi bi-check-circle-fill text-primary"></i>
@@ -12,14 +9,11 @@
                 <h2 class="fw-bold">付款成功！</h2>
                 <p class="fs-4 py-2">感謝您的訂購，商品將於 2-5 個工作天內完成配送</p>
                 <RouterLink to="/" class="btn btn-primary fw-bold rounded-pill text-white fs-4 mt-3 px-4">返回首頁</RouterLink>
-
-                </div>
-               
+                </div>           
             </div>
             <div v-else>
                 <CartStepper :stepper="3" />
                 <div class="col-lg-8 m-auto">
-                    {{ order.is_paid }}
                     <div className='d-flex justify-content-center align-items-center mt-3'>
                         <p className='check-logo  mx-2'>
                             <i className="bi bi-check-circle-fill text-primary"></i>
@@ -29,9 +23,9 @@
                             <p className="text-muted fw-bold fs-5">訂單編號：{{ orderId }}</p>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <h3 class="fs-3 fw-bold">訂單日期：{{ new Date(order.create_at * 1000).toLocaleDateString() }}</h3>
-                        <h3 class="fs-3 fw-bold">訂單金額： NT${{ Math.ceil(order.total) }}</h3>
+                    <div class="d-sm-flex flex-sm-row justify-content-between align-items-center mt-2">
+                        <h3 class="fs-4 fw-bold">訂單日期：{{ new Date(order.create_at * 1000).toLocaleDateString() }}</h3>
+                        <h3 class="fs-4 fw-bold mt-3 mt-sm-0">訂單金額： NT${{ Math.ceil(order.total) }}</h3>
                     </div>
                     <div>
                         <ul class="cart-list mt-3 p-0">
