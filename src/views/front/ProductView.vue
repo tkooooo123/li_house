@@ -1,5 +1,5 @@
 <template>
-    <div class="container pt-5">
+    <div class="container pt-mh">
         <h1 class="pt-4">商品一覽</h1>
         <div class="row">
             <div class="col-md-3">
@@ -43,7 +43,7 @@ export default {
     },
     created() {
         if(this.$route.query.category) {
-            this.changeCategory(this.$route.query.category)
+          this.fetchFilter()
         } else {
             this.fetchProducts();
         this.getPagination(this.products)
@@ -61,6 +61,10 @@ export default {
         test(item) {
             this.changeCategory(item)
             this.$router.push(`/products?category=${item}`)
+        },
+        async fetchFilter() {
+            await this.fetchProducts()
+            this.changeCategory(this.$route.query.category)
         }
     },
     computed: {
