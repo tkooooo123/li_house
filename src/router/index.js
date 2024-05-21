@@ -63,6 +63,10 @@ const router = createRouter({
           path: 'cart/success/:orderId',
           component: () => import('@/views/front/CartSuccess.vue'),
         },
+        {
+          path: 'login',
+              component: () => import('@/views/front/AdminLogin.vue'),
+        }
       ]
     },
    
