@@ -11,6 +11,7 @@ export default defineStore('productsStore', {
         productsAll: [],
         filteredProducts: [],
         relativeProducts: [],
+        otherProducts: [],
         categorySelected: '所有商品',
         categoryList: ['所有商品'],
         pagination: {
@@ -49,10 +50,12 @@ export default defineStore('productsStore', {
         },
         changeCategory(category) {
             if (category !== '所有商品') {
+                console.log('dd',category)
                 this.categorySelected = category;
                 const products = this.productsAll.filter((item) => item.category === category);
                 this.filteredProducts = products;
                 this.getPagination(products);
+              
             } else {
                 this.categorySelected = '所有商品';
                 this.filteredProducts = this.productsAll;
@@ -88,7 +91,8 @@ export default defineStore('productsStore', {
                 if (productRes.data.success) {
                     this.product = productRes.data.product
                     this.productsAll = productsAllRes.data.products
-                    this.relativeProducts = productsAllRes.data.products.filter((item) => item.category === this.product.category)
+                    this.relativeProducts = productsAllRes.data.products.filter((item) => item.category === this.product.category && item.id !== id)
+                    this.otherProducts = productsAllRes.data.products.filter((item) => item.id !== id)
                 } else {
                     toast.failToast(productRes.data.message)
                 }

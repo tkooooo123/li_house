@@ -1,6 +1,6 @@
 <template>
     <div class="container pt-mh">
-        <div class="row pt-5 g-5">
+        <div class="row pt-5 g-3">
             <div class="col-md-7 d-md-flex flex-sm-row-reverse justify-content-between">
                 <div className="product-img-wrapper">
                     <img className="product-img" :src="product.imageUrl" :alt="product.title" />
@@ -38,9 +38,14 @@
             </div>
         </div>
         <hr>
-        <h3 class="text-primary text-center fw-bold">相關商品</h3>
-        <div class="py-5">
+        
+        <div class="py-5" v-if="relativeProducts.length">
+            <h3 class="text-primary text-center fw-bold pb-5">相關商品</h3>
             <ProductSwiper :products="relativeProducts" />
+        </div>
+        <div class="py-5" v-else>
+            <h3 class="text-primary text-center fw-bold pb-5">其他商品</h3>
+            <ProductSwiper :products="otherProducts" />
         </div>
     </div>
 </template>
@@ -84,7 +89,8 @@ export default {
         ...mapState(productsStore, [
             'product',
             'productsAll',
-            'relativeProducts'
+            'relativeProducts',
+            'otherProducts'
         ]),
         id() {
             return this.$route.params.productId
