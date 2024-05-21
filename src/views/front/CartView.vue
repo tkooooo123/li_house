@@ -1,7 +1,7 @@
 <template>
-    <div class="container pt-5">
+    <div class="container pt-mh">
 
-        <div class="row pt-5 g-5" v-if="cartList.length">
+        <div class="row py-5 g-5" v-if="cartList.length">
             <Stepper :stepper="1" />
             <div class="col-md-8 col-12">
                 <div class="d-flex justify-content-between">
@@ -170,13 +170,14 @@ export default {
 .cart-list {
     border: 1px solid $primary;
     border-radius: 16px;
+    
 }
 
 .cart-item {
-    border-bottom: 1px solid $primary;
-
-    &:last-child {
-        border-bottom: none;
+    border-top: 1px solid $primary;
+    
+    &:first-child {
+        border-top: none;
     }
 }
 
