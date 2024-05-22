@@ -24,15 +24,17 @@
                     <span v-else>未付款</span>
                 </td>
                 <td>
-                    <button class="btn btn-outline-primary fw-bold">編輯</button>
+                    <button class="btn btn-outline-primary fw-bold"
+                    @click="showOrderModal(order)"
+                    >編輯</button>
                     <span> / </span>
                     <button class="btn btn-outline-danger">刪除</button>
                 </td>
                 </tr>
             </tbody>
+            <OrderModal ref="OrderModal" :order="tempOrder"/>
 
         </table>
-        
        <div class="d-flex justify-content-center mt-5">
         <nav class="Page navigation align-middle">
         <ul class="pagination">
@@ -66,11 +68,12 @@
 <script>
 import { mapActions, mapState } from 'pinia'
 import adminStore from '@/stores/adminStore'
+import OrderModal from '@/components/admin/modal/OrderModal.vue' 
 
 
 export default {
     components: {
-        
+        OrderModal
     },
     data() {
         return {
@@ -80,7 +83,8 @@ export default {
                 total_page: 7,
                 current_page: 1 
             },
-            curPage: 1
+            curPage: 1,
+            tempOrder: {}
         }
     },
     created() {
@@ -93,6 +97,10 @@ export default {
         ]),
         changePage(page) {
             this.curPage = page
+        },
+        showOrderModal(order) {
+            this.tempOrder = {...order}
+            this.$refs.OrderModal.showModal()
         }
     },
     computed: {
