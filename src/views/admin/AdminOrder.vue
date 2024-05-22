@@ -9,6 +9,7 @@
                         <th scope='col'>訂單編號</th>
                         <th scope='col'>總金額</th>
                         <th scope='col'>付款狀態</th>
+                        <th scope='col'>處理狀態</th>
                         <th scope='col'>編輯 / 刪除</th>
                 </tr>
             </thead>
@@ -22,6 +23,12 @@
                 <td>
                     <span v-if="order.is_paid">已付款</span>
                     <span v-else>未付款</span>
+                </td>
+                <td>
+                    <span v-if="order.status === 0">未處理</span>
+                    <span v-else-if="order.status === 1">配送中</span>
+                    <span v-else-if="order.status === 2">已送達</span>
+                    <span v-else>未處理</span>
                 </td>
                 <td>
                     <button class="btn btn-outline-primary fw-bold"
@@ -101,7 +108,8 @@ export default {
         showOrderModal(order) {
             this.tempOrder = {...order}
             this.$refs.OrderModal.showModal()
-        }
+        },
+        
     },
     computed: {
         ...mapState(adminStore, [

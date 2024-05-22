@@ -49,6 +49,13 @@
                             </ul>
                         </div>
                         <div class="col-lg-6">
+                            <h4 class="fw-bold text-primary mt-3">狀態變更</h4>
+                            <div class="mt-2">
+                                <select class="form-control" name="status" id="status" v-model="tempStatus">
+                                    <option v-for="item in statusList" :key="item.id" :value="item.id">{{ item.title }}
+                                    </option>
+                                </select>
+                            </div>
                             <h4 class="fw-bold text-primary mt-3">購買商品</h4>
                             <ul class="mt-3">
                                 <li class="d-flex justify-content-between border" v-for="item in tempOrder?.products"
@@ -73,7 +80,7 @@
                     <button type="button" class="btn btn-outline-secondary fw-bold rounded-pill"
                         data-bs-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary fw-bold rounded-pill text-white"
-                        >確定</button>
+                        @click="handleSubmit">確定</button>
                 </div>
             </div>
         </div>
@@ -84,22 +91,55 @@
 
 <script>
 import Modal from 'bootstrap/js/dist/modal'
+import { mapActions } from 'pinia';
+import adminStore from '@/stores/adminStore';
 
 export default {
     props: ['order'],
     data() {
         return {
             modal: {},
-            tempOrder: ''
+            tempOrder: '',
+            tempStatus: this.order.tatus,
+            statusList: [
+                {
+                    id: 0,
+                    title: '未處理',
+                },
+                {
+                    id: 1,
+                    title: '配送中',
+                },
+                {
+                    id: 2,
+                    title: '已送達',
+                }
+            ]
         }
     },
     methods: {
+        ...mapActions(adminStore, [
+            'editOrder'
+        ]),
         showModal() {
             this.modal.show();
         },
         hideModal() {
             this.modal.hide();
         },
+        handleSubmit() {
+            const data = {
+                ...this.tempOrder,
+                status: Number(this.tempStatus)
+            };
+            const id = this.tempOrder.id;
+            this.editOrder(id, data);
+            
+            this.modal.hide();
+        }
+    },
+    created() {
+        
     },
     mounted() {
         this.modal = new Modal(this.$refs.modal);
@@ -107,6 +147,7 @@ export default {
     watch: {
         order() {
             this.tempOrder = { ...this.order }
+            this.tempStatus = this.order.status || 0
         }
     }
 }
