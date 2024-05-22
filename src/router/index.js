@@ -65,13 +65,23 @@ const router = createRouter({
         },
         {
           path: 'login',
-              component: () => import('@/views/front/AdminLogin.vue'),
+          component: () => import('@/views/front/AdminLogin.vue'),
         }
       ]
     },
-   
+    {
+      path: '/admin',
+      component: () => import('@/views/admin/AdminDashboard.vue'),
+      children: [
+        {
+          path: 'order',
+          component: () => import('@/views/admin/AdminOrder.vue'),
+        }
+      ]
+    }
+
   ],
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (to.hash) {
       return {
         el: to.hash,
@@ -81,8 +91,8 @@ const router = createRouter({
     if (savedPosition) {
       return savedPosition
     } else {
-      return { 
-        top: 0, 
+      return {
+        top: 0,
         behavior: 'smooth',
       }
     }
