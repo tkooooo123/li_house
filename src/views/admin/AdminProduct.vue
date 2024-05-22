@@ -25,12 +25,13 @@
                             <span v-if="item.is_enabled">已啟用</span>
                         </td>
                         <td>
-                            <button class="btn btn-outline-primary fw-bold" @click="showOrderModal(order)">編輯</button>
+                            <button class="btn btn-outline-primary fw-bold" @click="showProductModal(item)">編輯</button>
                             <span> / </span>
-                            <button class="btn btn-outline-danger" @click="showDeleteModal(order)">刪除</button>
+                            <button class="btn btn-outline-danger" @click="showDeleteModal(product)">刪除</button>
                         </td>
                     </tr>
                 </tbody>
+                <ProductModal ref="ProductModal" :product="tempProduct"/>
             </table>
             <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage"/>
       </div>
@@ -39,16 +40,20 @@
 
 <script>
 import PaginationComponent from '@/components/admin/PaginationComponent.vue'
+import ProductModal from '@/components/admin/modal/ProductModal.vue'
 import adminStore from '@/stores/adminStore'
 import { mapActions, mapState } from 'pinia'
 
+
 export default {
     components: {
-        PaginationComponent
+        PaginationComponent,
+        ProductModal
     },
     data() {
         return {
-            curPage: 1
+            curPage: 1,
+            tempProduct: {}
         }
     },
     created() {
@@ -60,6 +65,10 @@ export default {
         ]),
         changePage(page) {
             this.curPage = page
+        },
+        showProductModal(product) {
+           this.tempProduct = product;
+            this.$refs.ProductModal.showModal()
         },
     },
     computed: {

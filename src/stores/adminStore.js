@@ -20,7 +20,8 @@ export default defineStore('adminStore', {
         orderList: [],
         pagination: {},
         curPage: '',
-        productList: []
+        productList: [],
+        imgUrl: ''
     }),
     actions: {
         async fetchOrders(page=1) {
@@ -97,6 +98,27 @@ export default defineStore('adminStore', {
             } catch (error) {
                 toast.handleError()
             }
+        },
+        async uploadImg(file) {
+            try {
+                status.isLoading = true;
+                const formData = new FormData();
+                formData.append('image', file);
+                const api = `${VITE_API}api/${VITE_PATH}/admin/upload`;
+                const res = await axios.post(api, formData);
+                if(res.data.success) {
+                    this.imgUrl = res.data.imageUrl;
+                    status.isLoading = false;
+                } else {
+                    toast.failToast(res.data.message);
+                    status.isLoading = false;
+                }
+                            
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
+            }
+
         }
     }
 
