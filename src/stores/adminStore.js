@@ -19,7 +19,8 @@ export default defineStore('adminStore', {
     status: () => ({
         orderList: [],
         pagination: {},
-        curPage: ''
+        curPage: '',
+        productList: []
     }),
     actions: {
         async fetchOrders(page=1) {
@@ -31,7 +32,7 @@ export default defineStore('adminStore', {
                     status.isLoading = false;
                     this.orderList = res.data.orders;
                     this.pagination = res.data.pagination
-                    this.curPage = res.data.pagination.current_page
+                    
                 } else {
                     toast.failToast(res.data.message);
                     status.isLoading = false;
@@ -77,6 +78,24 @@ export default defineStore('adminStore', {
             } catch (error) {
                 toast.handleError();
                 status.isLoading = false;
+            }
+        },
+        async fecthAdminProducts(page=1) {
+            try {
+                status.isLoading = true;
+                const api = `${VITE_API}api/${VITE_PATH}/admin/products?page=${page}`;
+                const res = await axios.get(api)
+    
+                if(res.data.success) {
+                    status.isLoading = false;
+                    this.productList = res.data.products;
+                    this.pagination = res.data.pagination;
+                } else {
+                    toast.failToast(res.data.message);
+                    status.isLoading = false;
+                }
+            } catch (error) {
+                toast.handleError()
             }
         }
     }
