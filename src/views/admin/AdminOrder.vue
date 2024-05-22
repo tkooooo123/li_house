@@ -35,12 +35,14 @@
                     @click="showOrderModal(order)"
                     >編輯</button>
                     <span> / </span>
-                    <button class="btn btn-outline-danger">刪除</button>
+                    <button class="btn btn-outline-danger"
+                    @click="showDeleteModal(order)"
+                    >刪除</button>
                 </td>
                 </tr>
             </tbody>
             <OrderModal ref="OrderModal" :order="tempOrder"/>
-
+            <DeleteOrderModal ref="DeleteOrderModal" :id="tempId" @handle-delete="handleDelete"/>
         </table>
        <div class="d-flex justify-content-center mt-5">
         <nav class="Page navigation align-middle">
@@ -76,11 +78,12 @@
 import { mapActions, mapState } from 'pinia'
 import adminStore from '@/stores/adminStore'
 import OrderModal from '@/components/admin/modal/OrderModal.vue' 
-
+import DeleteOrderModal from '@/components/admin/modal/DeleteOrderModal.vue' 
 
 export default {
     components: {
-        OrderModal
+        OrderModal,
+        DeleteOrderModal
     },
     data() {
         return {
@@ -91,7 +94,8 @@ export default {
                 current_page: 1 
             },
             curPage: 1,
-            tempOrder: {}
+            tempOrder: {},
+            tempId: '',
         }
     },
     created() {
@@ -100,7 +104,8 @@ export default {
     },
     methods: {
         ...mapActions(adminStore, [
-            'fetchOrders'
+            'fetchOrders',
+            'deleteOrder'
         ]),
         changePage(page) {
             this.curPage = page
@@ -109,12 +114,20 @@ export default {
             this.tempOrder = {...order}
             this.$refs.OrderModal.showModal()
         },
+        showDeleteModal(order) {
+            this.tempId = order.id
+            this.$refs.DeleteOrderModal.showModal()
+        },
+        handleDelete() {
+            this.deleteOrder(this.tempId)
+            this.$refs.DeleteOrderModal.hideModal()
+        }
         
     },
     computed: {
         ...mapState(adminStore, [
             'orderList',
-            'pagination'
+            'pagination',
         ])
     },
     watch: {

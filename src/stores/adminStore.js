@@ -60,6 +60,24 @@ export default defineStore('adminStore', {
                 toast.handleError();
                 status.isLoading = false;
             }
+        },
+        async deleteOrder(id) {
+            try {
+                status.isLoading = true;
+                const api = `${VITE_API}api/${VITE_PATH}/admin/order/${id}`;
+                const res = await axios.delete(api);
+                if(res.data.success) {
+                    await this.fetchOrders(this.curPage);
+                    toast.successToast(res.data.message);
+                    status.isLoading = false;
+                }  else {
+                    toast.failToast(res.data.message);
+                    status.isLoading = false;
+                }
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
+            }
         }
     }
 
