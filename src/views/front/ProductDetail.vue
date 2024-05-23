@@ -105,7 +105,6 @@ export default {
     },
     watch: {
         id(newId, oldId) {
-            console.log(oldId, 1)
             if (newId !== oldId) {
                 this.fetchProduct(newId);
             }

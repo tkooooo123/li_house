@@ -41,7 +41,6 @@ export default {
         ]),
         async getProducts() {
             await this.fetchProducts();
-            console.log(this.productsAll)
             this.productList = this.productsAll.slice(0, 4)
         }
     },

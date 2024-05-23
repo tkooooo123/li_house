@@ -26,8 +26,5 @@
 <script>
 export default {
     props: ['pagination', 'curPage'],
-    created() {
-        console.log(this.pagination)
-    }
 }
 </script>
