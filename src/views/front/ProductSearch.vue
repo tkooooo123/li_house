@@ -1,15 +1,21 @@
 <template>
-    <div class="container pt-5">
+    <div class="container pt-mh">
         <h1 class="pt-5 fw-bold">搜尋結果</h1>
         <div class="row pt-3">
             <div class="col-md-3">
                 <h3 class="fw-bold pb-3">搜尋關鍵字：</h3>
                 <span class="fw-bold bg-primary text-white p-2 rounded-4">{{ $route.query.keyword }}</span>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-9 mt-5 mt-md-0">
                 <div v-if="products.length">
-                    <ProductCard :products="products" />
-                    <div class="d-flex justify-content-center">
+                    <ul class="row g-3 p-0">
+                        <li class="col-lg-4 col-sm-6 col-12" v-for="product in products" :key="product.id">
+                            <ProductCard 
+                            :product="product"
+                            />
+                        </li>
+                    </ul>
+                    <div class="d-flex justify-content-center py-5">
                         <PaginationComponent :pages="pagination" :items="filteredProducts"
                             @change-page="getPagination" />
                     </div>

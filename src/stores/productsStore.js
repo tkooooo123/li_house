@@ -31,8 +31,8 @@ export default defineStore('productsStore', {
                 status.isLoading = true;
                 const api = `${VITE_API}api/${VITE_PATH}/products/all`;
                 const res = await axios.get(api);
-               
-                if(res.data.products) {
+
+                if (res.data.products) {
                     const productsAll = res.data.products;
                     this.filteredProducts = productsAll;
                     this.productsAll = productsAll;
@@ -67,7 +67,7 @@ export default defineStore('productsStore', {
                 const products = this.productsAll.filter((item) => item.category === category);
                 this.filteredProducts = products;
                 this.getPagination(products);
-              
+
             } else {
                 this.categorySelected = '所有商品';
                 this.filteredProducts = this.productsAll;
@@ -75,7 +75,7 @@ export default defineStore('productsStore', {
 
             }
         },
-        getPagination(items, curPage = 1, perPage = 10) {
+        getPagination(items, curPage = 1, perPage = 12) {
             const totalPage = Math.ceil(items.length / perPage);
             const startIndex = (curPage - 1) * perPage;
             const endIndex = curPage * perPage;
@@ -99,8 +99,8 @@ export default defineStore('productsStore', {
                 const productApi = `${VITE_API}api/${VITE_PATH}/product/${id}`;
                 const productsAllApi = `${VITE_API}api/${VITE_PATH}/products/all`;
                 const [productRes, productsAllRes] = await Promise.all([axios.get(productApi), axios.get(productsAllApi)])
-                
-                
+
+
                 if (productRes.data.success) {
                     this.product = productRes.data.product;
                     this.productsAll = productsAllRes.data.products;
