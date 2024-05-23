@@ -35,7 +35,7 @@
                         </div>
 
                     </li>
-                    <DeleteItemModal ref="deleteItemModal" :item="tempItem" @handle-delete="handleItemDelete"/>
+                    <DeleteItemModal ref="deleteItemModal" :item="tempItem" @handle-delete="handleItemDelete" />
                 </ul>
             </div>
             <div class="col-md-4 col-12">
@@ -44,39 +44,33 @@
                     <input type="text"
                         class="coupon-input border border-primary rounded-pill fw-bold py-lg-0 ps-3 me-lg-3"
                         placeholder="請輸入優惠碼" v-model="coupon">
-                    <button type="button"
-                        class="btn btn-primary text-white rounded-pill fw-bold mt-3 mt-lg-0"
-                        @click="useCoupon(coupon)"
-                        >套用</button>
+                    <button type="button" class="btn btn-primary text-white rounded-pill fw-bold mt-3 mt-lg-0"
+                        @click="useCoupon(coupon)">套用</button>
                 </div>
-                <p class="m-2 text-primary" v-if="cartList[0].coupon"><strong>已套用優惠碼：{{ cartList[0].coupon?.code }}</strong></p>
-                <table class="table mt-3 text-end fw-bold">
-                    <tbody>
-                        <tr>
-                            <td class="text-start">商品總計</td>
-                            <td>NT$ {{ total }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">運費</td>
-                            <td>NT$ 0</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">優惠折抵</td>
-                            <td>- NT$ 
-                                {{ total - Math.ceil(finalTotal) }}
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td class="text-start">總金額</td>
-                            <td>NT$ {{ Math.ceil(finalTotal) }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-                <div class="d-flex justify-content-between">
+                <p class="m-2 text-primary" v-if="cartList[0].coupon"><strong>已套用優惠碼：{{ cartList[0].coupon?.code
+                        }}</strong></p>
+                <div class="d-flex justify-content-between px-2 fw-bold mt-3">
+                    <p>商品總計</p>
+                    <p>NT$ {{ total }}</p>
+                </div>
+                <div class="d-flex justify-content-between px-2 fw-bold">
+                    <p>運費</p>
+                    <p>NT$ 0</p>
+                </div>
+                <div class="d-flex justify-content-between px-2 fw-bold">
+                    <p>優惠折抵</p>
+                    <p>- NT$
+                        {{ total - Math.ceil(finalTotal) }}</p>
+                </div>
+
+                <div class="d-flex justify-content-between px-2 pt-2 fw-bold border-top border-primary">
+                    <p>總金額</p>
+                    <p>NT$ {{ Math.ceil(finalTotal) }}</p>
+                </div>
+                <div class="d-flex justify-content-between mt-3">
                     <RouterLink class="btn btn-outline-secondary fw-bold rounded-pill" to="/products">繼續購物</RouterLink>
-                    <RouterLink class="btn btn-primary fw-bold text-white rounded-pill" to="/cart/checkout">確認結帳</RouterLink>
+                    <RouterLink class="btn btn-primary fw-bold text-white rounded-pill" to="/cart/checkout">確認結帳
+                    </RouterLink>
                 </div>
             </div>
         </div>
@@ -132,7 +126,7 @@ export default {
             this.$refs.deleteCartModal.hideModal()
         },
         openDeleteItemModal(item) {
-            this.tempItem = {...item}
+            this.tempItem = { ...item }
             this.$refs.deleteItemModal.showModal()
         },
         handleItemDelete(id) {
@@ -170,12 +164,12 @@ export default {
 .cart-list {
     border: 1px solid $primary;
     border-radius: 16px;
-    
+
 }
 
 .cart-item {
     border-top: 1px solid $primary;
-    
+
     &:first-child {
         border-top: none;
     }
