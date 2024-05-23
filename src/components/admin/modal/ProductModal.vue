@@ -69,7 +69,7 @@
                                                     class="text-danger">*</span></label>
                                             <VField type="number" class="form-control border border-primary"
                                                 id="origin_price" placeholder="" name="原價" rules="required"
-                                                :class="{ 'is-invalid': errors['原價'] }"
+                                                :class="{ 'is-invalid': errors['原價'] }" min="1"
                                                 v-model.trim="tempProduct.origin_price" />
                                             <ErrorMessage name="原價" class="invalid-feedback" />
                                         </div>
@@ -78,8 +78,8 @@
                                         <div class="mb-3">
                                             <label for="price" class="form-label">售價<span
                                                     class="text-danger">*</span></label>
-                                            <VField type="text" class="form-control border border-primary" id="price"
-                                                placeholder="" name="售價" rules="required"
+                                            <VField type="number" class="form-control border border-primary" id="price"
+                                                placeholder="" name="售價" rules="required" min="1"
                                                 :class="{ 'is-invalid': errors['售價'] }"
                                                 v-model.trim="tempProduct.price" />
                                             <ErrorMessage name="售價" class="invalid-feedback" />
