@@ -25,7 +25,7 @@
 
                         <div class="text-center pt-3">
                             <button type="submit" class="btn btn-primary rounded-pill px-5">
-                                送出
+                                登入
                             </button>
                         </div>
                     </VForm>
@@ -39,8 +39,9 @@
 <script>
 import toastStore from '@/stores/toastStore';
 import axios from 'axios';
+import statusStore from '@/stores/statusStore';
 const toast = toastStore();
-
+const status = statusStore();
 
 export default {
     data() {
@@ -52,18 +53,23 @@ export default {
     methods: {
         async adminLogin() {
             try {
+                status.isLoading = true;
                 const api = `${import.meta.env.VITE_API}admin/signin`
                 const data = { username: this.email, password: this.password }
                 const res = await axios.post(api, data)
                if(res.data.success) {
                 const { token, expired } = res.data;
                 document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
-                toast.successToast(res.data.message)
+                toast.successToast(res.data.message);
+                this.$router.push('/admin/product');
+                status.isLoading = false;
                } else {
-                toast.failToast('帳號或密碼錯誤，請重新輸入')
+                toast.failToast('帳號或密碼錯誤，請重新輸入');
+                status.isLoading = false;
                }
             } catch (error) {
                 toast.handleError();
+                status.isLoading = false;
             }
         }
     }
