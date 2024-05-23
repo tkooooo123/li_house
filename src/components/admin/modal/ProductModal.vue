@@ -3,7 +3,7 @@
     <div ref="modal" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
-            <VForm v-slot="errors" class="product-form" @submit="handleSubmit">
+            <VForm v-slot="{ errors }" red="form" @submit="handleSubmit">
                 <div class="modal-content border-0">
                     <div class="modal-header">
                         <h5 class="modal-title fs-4 fw-bold" id="exampleModalLabel">編輯商品</h5>
@@ -124,7 +124,7 @@
                         <button type="button" class="btn btn-outline-secondary fw-bold rounded-pill"
                             data-bs-dismiss="modal" @click="switchState">取消</button>
                         <button type="submit" class="btn btn-primary fw-bold rounded-pill text-white">
-                            刪除</button>
+                            確定</button>
                     </div>
                 </div>
             </VForm>
@@ -169,6 +169,7 @@ export default {
         },
         switchState() {
             this.state = false
+            
         },
         async uploadImage() {
             if (this.$refs.image.files[0]) {
@@ -181,21 +182,27 @@ export default {
                 await this.uploadImgs(this.$refs.images.files);
                 const arr = [
                     ...this.tempProduct.imagesUrl,
-                    ...this.imagesUrl
+                    ...this.imgsUrl
                 ]
                 this.tempProduct.imagesUrl = arr
             }
 
         },
         async handleSubmit() {
-            await this.postProduct(this.tempProduct, this.type);
+            const data = {
+                ...this.tempProduct,
+                origin_price: Number(this.tempProduct.origin_price),
+                price: Number(this.tempProduct.price)
+            }
+
+            await this.postProduct(data, this.type);
             this.modal.hide();
         }
     },
     computed: {
         ...mapState(adminStore, [
             'imgUrl',
-            'imagesUrl'
+            'imgsUrl'
         ])
     },
     mounted() {
@@ -205,7 +212,7 @@ export default {
         product() {
             this.tempProduct = {
                 ...this.product,
-                imagesUrl: [...this.product.imagesUrl]
+                imagesUrl: this.tempProduct.imagesUrl ? [...this.product.imagesUrl] : []
             }
 
 

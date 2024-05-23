@@ -1,7 +1,14 @@
 <template>
     <div class="pt-mh-100 bg-white">
         <div class="container pb-5">
-            <h1 class="fw-bold mt-3">商品列表</h1>
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="fw-bold mt-3">商品列表</h2>
+                <div>
+                    <button class="btn btn-primary"
+                @click="showProductModal(null ,type = 'create')"
+                >新增商品</button>
+                </div>
+            </div>
             <table class="table fs-5">
                 <thead>
                     <tr class="fw-bold">
@@ -70,7 +77,23 @@ export default {
         },
         showProductModal(product, type) {
             this.type = type;
-            this.tempProduct = product;
+            if(type === 'edit') {
+                this.tempProduct = {...product};
+            } else {
+                this.tempProduct = {
+                    title: '',
+                    category: '',
+                    origin_price: '',
+                    price: '',
+                    description: '',
+                    content: '',
+                    unit: '',
+                    imageUrl: '',
+                    imagesUrl: '',
+                    is_enabled: true
+                }
+            }
+    
             this.$refs.ProductModal.showModal()
         },
     },

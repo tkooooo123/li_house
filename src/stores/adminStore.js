@@ -142,7 +142,7 @@ export default defineStore('adminStore', {
                             toast.failToast(data[i].data.message);
                             status.isLoading = false;
                         }
-                        this.imagesUrl = imgs;
+                        this.imgsUrl = imgs;
                         status.isLoading = false;
                     }
 
@@ -169,7 +169,7 @@ export default defineStore('adminStore', {
                     toast.successToast(res.data.message);
                     status.isLoading = false;
                 } else {
-                    toast.failToast(res.data.message)
+                    toast.failToast(...res.data.message)
                     status.isLoading = false;
                 }
             } catch (error) {
