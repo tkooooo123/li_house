@@ -58,7 +58,7 @@ export default defineStore('cartStore', {
         },
         async deleteCartItem(id) {
             try {
-                status.isLoading = false;
+                status.isLoading = true;
                 const api = `${VITE_API}api/${VITE_PATH}/cart/${id}`;
                 const res = await axios.delete(api);
                 if (res.data.success) {
@@ -75,6 +75,7 @@ export default defineStore('cartStore', {
         },
         async deleteCart() {
             try {
+                status.isLoading = true;
                 const api = `${VITE_API}api/${VITE_PATH}/carts`;
                 const res = await axios.delete(api);
                 if (res.data.success) {
@@ -93,7 +94,7 @@ export default defineStore('cartStore', {
         },
         async updateCartItem(id, qty) {
             try {
-                status.isLoading = false;
+                status.isLoading = true;
                 const api = `${VITE_API}api/${VITE_PATH}/cart/${id}`;
                 const data = { product_id: id, qty };
                 const res = await axios.put(api, { data });
