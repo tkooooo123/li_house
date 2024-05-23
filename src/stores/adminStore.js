@@ -122,35 +122,61 @@ export default defineStore('adminStore', {
 
         },
         async uploadImgs(files) {
-           try {
-             status.isLoading = true;
-             const imgs = []
-             const imgsReq = []
-             for (let i = 0; i < files.length; i++) {
-                 const api = `${VITE_API}api/${VITE_PATH}/admin/upload`;
-                 const formData = new FormData();
-                 formData.append('image', files[i]);
-                 const req = axios.post(api, formData)
-                 imgsReq.push(req)
-             }
-             const data = await Promise.all([...imgsReq])
-             if (data) {
-                 for (let i = 0; i < data.length; i++) {
-                     if (data[i].data.success) {
-                         imgs.push(data[i].data.imageUrl)
-                     } else {
-                         toast.failToast(data[i].data.message);
-                         status.isLoading = false;
-                     }
-                     this.imagesUrl = imgs;
-                     status.isLoading = false;
-                 }
- 
-             }
-           } catch (error) {
-            toast.handleError();
-            status.isLoading = false;
-           }
+            try {
+                status.isLoading = true;
+                const imgs = []
+                const imgsReq = []
+                for (let i = 0; i < files.length; i++) {
+                    const api = `${VITE_API}api/${VITE_PATH}/admin/upload`;
+                    const formData = new FormData();
+                    formData.append('image', files[i]);
+                    const req = axios.post(api, formData)
+                    imgsReq.push(req)
+                }
+                const data = await Promise.all([...imgsReq])
+                if (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i].data.success) {
+                            imgs.push(data[i].data.imageUrl)
+                        } else {
+                            toast.failToast(data[i].data.message);
+                            status.isLoading = false;
+                        }
+                        this.imagesUrl = imgs;
+                        status.isLoading = false;
+                    }
+
+                }
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
+            }
+        },
+        async postProduct(data, type) {
+            try {
+                status.isLoading = true;
+                let api = `${VITE_API}api/${VITE_PATH}/admin/product`;
+                let method = 'post';
+
+                if(type === 'edit') {
+                    api = `${VITE_API}api/${VITE_PATH}/admin/product/${data.id}`
+                    method = 'put'
+                    
+                }
+                const res = await axios[method](api, { data })
+                if(res.data.success) {
+                    await this.fecthAdminProducts(this.curPage);
+                    toast.successToast(res.data.message);
+                    status.isLoading = false;
+                } else {
+                    toast.failToast(res.data.message)
+                    status.isLoading = false;
+                }
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
+            }
+
         }
     }
 

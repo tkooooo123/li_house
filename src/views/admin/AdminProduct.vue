@@ -25,16 +25,17 @@
                             <span v-if="item.is_enabled">已啟用</span>
                         </td>
                         <td>
-                            <button class="btn btn-outline-primary fw-bold" @click="showProductModal(item)">編輯</button>
+                            <button class="btn btn-outline-primary fw-bold"
+                                @click="showProductModal(item, type = 'edit')">編輯</button>
                             <span> / </span>
                             <button class="btn btn-outline-danger" @click="showDeleteModal(product)">刪除</button>
                         </td>
                     </tr>
                 </tbody>
-                <ProductModal ref="ProductModal" :product="tempProduct"/>
+                <ProductModal ref="ProductModal" :product="tempProduct" :type="type"/>
             </table>
-            <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage"/>
-      </div>
+            <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage" />
+        </div>
     </div>
 </template>
 
@@ -53,21 +54,23 @@ export default {
     data() {
         return {
             curPage: 1,
-            tempProduct: {}
+            tempProduct: {},
+            type: ''
         }
     },
     created() {
-      this.fecthAdminProducts();
+        this.fecthAdminProducts();
     },
-    methods: { 
+    methods: {
         ...mapActions(adminStore, [
             'fecthAdminProducts'
         ]),
         changePage(page) {
             this.curPage = page
         },
-        showProductModal(product) {
-           this.tempProduct = product;
+        showProductModal(product, type) {
+            this.type = type;
+            this.tempProduct = product;
             this.$refs.ProductModal.showModal()
         },
     },
@@ -90,5 +93,4 @@ export default {
     width: 100px;
     aspect-ratio: 1;
 }
-
 </style>

@@ -3,7 +3,7 @@
     <div ref="modal" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
-            <VForm v-slot="errors" class="product-form">
+            <VForm v-slot="errors" class="product-form" @submit="handleSubmit">
                 <div class="modal-content border-0">
                     <div class="modal-header">
                         <h5 class="modal-title fs-4 fw-bold" id="exampleModalLabel">編輯商品</h5>
@@ -109,23 +109,21 @@
                                 </div>
 
                                 <div class="d-flex">
-                                    <div v-for="item in tempProduct.imagesUrl" :key="item" class="position-relative p-2">
+                                    <div v-for="item in tempProduct.imagesUrl" :key="item"
+                                        class="position-relative p-2">
                                         <img :src="item" alt="" class="product-imgs">
                                         <button type="button" class="remove-btn btn border-0 p-0 position-absolute"
-                                        @click="removeImg(item)"
-                                        ><i class="bi bi-x-circle fs-5"></i></button>
+                                            @click="removeImg(item)"><i class="bi bi-x-circle fs-5"></i></button>
                                     </div>
-                                   
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary fw-bold rounded-pill"
-                            data-bs-dismiss="modal"
-                            @click="switchState"
-                            >取消</button>
-                        <button type="button" class="btn btn-primary fw-bold rounded-pill text-white">
+                            data-bs-dismiss="modal" @click="switchState">取消</button>
+                        <button type="submit" class="btn btn-primary fw-bold rounded-pill text-white">
                             刪除</button>
                     </div>
                 </div>
@@ -142,7 +140,7 @@ import { mapActions, mapState } from 'pinia'
 import adminStore from '@/stores/adminStore'
 
 export default {
-    props: ['product'],
+    props: ['product', 'type'],
     data() {
         return {
             modal: {},
@@ -156,7 +154,8 @@ export default {
     methods: {
         ...mapActions(adminStore, [
             'uploadImg',
-            'uploadImgs'
+            'uploadImgs',
+            'postProduct'
         ]),
         showModal() {
             this.modal.show();
@@ -166,23 +165,31 @@ export default {
         },
         removeImg(item) {
             const index = this.tempProduct.imagesUrl.indexOf(item)
-            this.tempProduct.imagesUrl.splice(index,1)
+            this.tempProduct.imagesUrl.splice(index, 1)
         },
         switchState() {
             this.state = false
         },
         async uploadImage() {
-            await this.uploadImg(this.$refs.image.files[0]);
-            this.tempProduct.imageUrl = this.imgUrl;
+            if (this.$refs.image.files[0]) {
+                await this.uploadImg(this.$refs.image.files[0]);
+                this.tempProduct.imageUrl = this.imgUrl;
+            }
         },
         async uploadImages() {
-            
-          await this.uploadImgs(this.$refs.images.files);
-          const arr = [
-            ...this.tempProduct.imagesUrl,
-            ...this.imagesUrl
-          ]
-        this.tempProduct.imagesUrl = arr
+            if (this.$refs.images.files) {
+                await this.uploadImgs(this.$refs.images.files);
+                const arr = [
+                    ...this.tempProduct.imagesUrl,
+                    ...this.imagesUrl
+                ]
+                this.tempProduct.imagesUrl = arr
+            }
+
+        },
+        async handleSubmit() {
+            await this.postProduct(this.tempProduct, this.type);
+            this.modal.hide();
         }
     },
     computed: {
@@ -196,20 +203,20 @@ export default {
     },
     watch: {
         product() {
-            this.tempProduct = { 
+            this.tempProduct = {
                 ...this.product,
                 imagesUrl: [...this.product.imagesUrl]
-             }
+            }
 
- 
+
         },
         state() {
-            if(!this.state) {
-                this.tempProduct = { 
-                ...this.product,
-                imagesUrl: [...this.product.imagesUrl]
-             }
-            this.state= true
+            if (!this.state) {
+                this.tempProduct = {
+                    ...this.product,
+                    imagesUrl: [...this.product.imagesUrl]
+                }
+                this.state = true
             }
 
         }
@@ -229,7 +236,8 @@ export default {
     object-fit: cover;
     aspect-ratio: 1;
 }
-.remove-btn{
+
+.remove-btn {
     top: 0;
     right: 0;
 }
