@@ -16,18 +16,17 @@
                                     <img :src="tempProduct.imageUrl" alt="" class="product-img">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="imageUrl" class="form-label">圖片連結<span class="text-danger">*</span></label>
+                                    <label for="imageUrl" class="form-label">圖片連結<span
+                                            class="text-danger">*</span></label>
                                     <VField type="text" class="form-control border border-primary" id="imageUrl"
                                         placeholder="" name="圖片連結" rules="required"
                                         :class="{ 'is-invalid': errors['圖片連結'] }" v-model.trim="tempProduct.imageUrl" />
                                     <ErrorMessage name="圖片連結" class="invalid-feedback" />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="upload">上傳圖片</label>
-                                   <input type="file" class="form-control border border-primary"
-                                   ref="image"
-                                   @change="uploadImage"
-                                   >
+                                    <label for="img">上傳圖片</label>
+                                    <input type="file" class="form-control border border-primary" ref="image" id="img"
+                                        @change="uploadImage">
                                 </div>
 
                             </div>
@@ -89,29 +88,43 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">商品描述</label>
-                                    <VField as="textarea" class="form-control border border-primary "
-                                        id="description" rules="required"
-                                        :class="{ 'is-invalid': errors['商品描述'] }" name="商品描述"
-                                        rows="5"
+                                    <VField as="textarea" class="form-control border border-primary " id="description"
+                                        rules="required" :class="{ 'is-invalid': errors['商品描述'] }" name="商品描述" rows="5"
                                         v-model.trim="tempProduct.description" />
                                     <ErrorMessage name="商品描述" class="invalid-feedback" />
                                 </div>
                                 <div class="mb-3">
                                     <label for="content" class="form-label">商品內容</label>
-                                    <VField as="textarea" class="form-control border border-primary "
-                                        id="content" rules="required"
-                                        :class="{ 'is-invalid': errors['商品內容'] }" name="商品內容"
-                                        rows="5"
+                                    <VField as="textarea" class="form-control border border-primary " id="content"
+                                        rules="required" :class="{ 'is-invalid': errors['商品內容'] }" name="商品內容" rows="5"
                                         v-model.trim="tempProduct.content" />
                                     <ErrorMessage name="商品內容" class="invalid-feedback" />
                                 </div>
+                            </div>
+                            <div>
+                                <div class="mb-3">
+                                    <label for="imgs">上傳其他圖片</label>
+                                    <input type="file" class="form-control border border-primary" ref="images" id="imgs"
+                                        @change="uploadImages" multiple>
+                                </div>
 
+                                <div class="d-flex">
+                                    <div v-for="item in tempProduct.imagesUrl" :key="item" class="position-relative p-2">
+                                        <img :src="item" alt="" class="product-imgs">
+                                        <button type="button" class="remove-btn btn border-0 p-0 position-absolute"
+                                        @click="removeImg(item)"
+                                        ><i class="bi bi-x-circle fs-5"></i></button>
+                                    </div>
+                                   
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary fw-bold rounded-pill"
-                            data-bs-dismiss="modal">取消</button>
+                            data-bs-dismiss="modal"
+                            @click="switchState"
+                            >取消</button>
                         <button type="button" class="btn btn-primary fw-bold rounded-pill text-white">
                             刪除</button>
                     </div>
@@ -133,7 +146,8 @@ export default {
     data() {
         return {
             modal: {},
-            tempProduct: ''
+            tempProduct: '',
+            state: this.status
         }
     },
     created() {
@@ -141,7 +155,8 @@ export default {
     },
     methods: {
         ...mapActions(adminStore, [
-            'uploadImg'
+            'uploadImg',
+            'uploadImgs'
         ]),
         showModal() {
             this.modal.show();
@@ -149,31 +164,73 @@ export default {
         hideModal() {
             this.modal.hide();
         },
+        removeImg(item) {
+            const index = this.tempProduct.imagesUrl.indexOf(item)
+            this.tempProduct.imagesUrl.splice(index,1)
+        },
+        switchState() {
+            this.state = false
+        },
         async uploadImage() {
             await this.uploadImg(this.$refs.image.files[0]);
             this.tempProduct.imageUrl = this.imgUrl;
+        },
+        async uploadImages() {
+            
+          await this.uploadImgs(this.$refs.images.files);
+          const arr = [
+            ...this.tempProduct.imagesUrl,
+            ...this.imagesUrl
+          ]
+        this.tempProduct.imagesUrl = arr
         }
     },
     computed: {
         ...mapState(adminStore, [
-            'imgUrl'
+            'imgUrl',
+            'imagesUrl'
         ])
     },
     mounted() {
-        this.modal = new Modal(this.$refs.modal);
+        this.modal = new Modal(this.$refs.modal, { backdrop: 'static', keyboard: false });
     },
     watch: {
         product() {
-            this.tempProduct = { ...this.product }
-            console.log(this.product)
+            this.tempProduct = { 
+                ...this.product,
+                imagesUrl: [...this.product.imagesUrl]
+             }
+
+ 
+        },
+        state() {
+            if(!this.state) {
+                this.tempProduct = { 
+                ...this.product,
+                imagesUrl: [...this.product.imagesUrl]
+             }
+            this.state= true
+            }
+
         }
     }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .product-img {
     max-height: 300px;
     aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.product-imgs {
+    height: 100px;
+    object-fit: cover;
+    aspect-ratio: 1;
+}
+.remove-btn{
+    top: 0;
+    right: 0;
 }
 </style>
