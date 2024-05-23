@@ -17,7 +17,7 @@
                             </ul>
                         </div>
                         <div class="col-md-4 text-white">
-                            <h4 class="fw-bold">Li House</h4>
+                            <div class="d-flex align-items-center mb-2"><h4 class="fw-bold m-0">Li House</h4> <RouterLink to="/login" class="rounded-pill bg-white fw-bold py-1 px-2 ms-3">後台登入</RouterLink></div>
                             <ul class="d-flex flex-column p-0">
                                 <span class="fw-bold">營業時間： 10:00 - 20:00</span>
                                 <span class="fw-bold">電話：04-2345-6789</span>
@@ -26,7 +26,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="border-top border-1 border-white mx-3 py-3 text-center text-white fw-bold">
+                    <div class="border-top border-1 border-white mt-3 py-3 text-center text-white fw-bold">
                     本站僅作為網頁作品練習使用 2024 © All Rights Reserved.
                     </div>
                 </div>

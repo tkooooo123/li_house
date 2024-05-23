@@ -27,7 +27,9 @@
                         </RouterLink>
                     </li>
                     <li>
-                        <RouterLink to="" class="nav-link ms-2">
+                        <RouterLink to="contactus" class="nav-link ms-2"
+                        @click="switchToggle"
+                        >
                             聯絡我們
                         </RouterLink>
                     </li>
@@ -128,13 +130,7 @@ export default {
     z-index: 100;
 }
 
-.toggle-button {
-    display: inline-block;
-    position: relative;
-    padding-left: 1.5rem;
-    transition: all 0.25s;
-    cursor: pointer;
-}
+
 
 .toggle-btn.active~.toggle-menu {
     display: flex;
@@ -171,7 +167,7 @@ export default {
 
 .active {
     transform: scale(.75);
-    z-index: 99;
+    z-index: 300;
 
     .toggle {
         background: transparent;
@@ -192,10 +188,12 @@ export default {
 .toggle-menu {
     display: none;
     position: fixed;
-    top: 66px;
+    padding-top: 66px;
+    top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: 200;
 }
 
 .logo-img {
