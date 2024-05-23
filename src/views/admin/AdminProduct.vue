@@ -35,11 +35,12 @@
                             <button class="btn btn-outline-primary fw-bold"
                                 @click="showProductModal(item, type = 'edit')">編輯</button>
                             <span> / </span>
-                            <button class="btn btn-outline-danger" @click="showDeleteModal(product)">刪除</button>
+                            <button class="btn btn-outline-danger" @click="showDeleteModal(item)">刪除</button>
                         </td>
                     </tr>
                 </tbody>
                 <ProductModal ref="ProductModal" :product="tempProduct" :type="type"/>
+                <DeleteModal ref="DeleteModal" :title="productTitle" :text="text" @handle-delete="handleDelete"/>
             </table>
             <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage" />
         </div>
@@ -49,6 +50,7 @@
 <script>
 import PaginationComponent from '@/components/admin/PaginationComponent.vue'
 import ProductModal from '@/components/admin/modal/ProductModal.vue'
+import DeleteModal from '@/components/admin/modal/DeleteModal.vue'
 import adminStore from '@/stores/adminStore'
 import { mapActions, mapState } from 'pinia'
 
@@ -56,13 +58,17 @@ import { mapActions, mapState } from 'pinia'
 export default {
     components: {
         PaginationComponent,
-        ProductModal
+        ProductModal,
+        DeleteModal
     },
     data() {
         return {
             curPage: 1,
             tempProduct: {},
-            type: ''
+            type: '',
+            productTitle: '',
+            productId: '',
+            text: '商品'
         }
     },
     created() {
@@ -70,7 +76,8 @@ export default {
     },
     methods: {
         ...mapActions(adminStore, [
-            'fecthAdminProducts'
+            'fecthAdminProducts',
+            'deleteProduct'
         ]),
         changePage(page) {
             this.curPage = page
@@ -96,6 +103,15 @@ export default {
     
             this.$refs.ProductModal.showModal()
         },
+        showDeleteModal(product) {
+            this.productTitle = product.title;
+            this.productId = product.id;
+            this.$refs.DeleteModal.showModal();
+        },
+        async handleDelete() {
+            await this.deleteProduct(this.productId)
+            this.$refs.DeleteModal.hideModal();
+        }
     },
     computed: {
         ...mapState(adminStore, [
