@@ -19,7 +19,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-9 mt-3 mt-md-0">
                 <div v-if="products.length">
                     <ul class="row g-3 p-0">
                         <li class="col-lg-4 col-sm-6 col-12" v-for="product in products" :key="product.id">
@@ -29,7 +29,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center pt-5">
                     <PaginationComponent :pages="pagination" :items="filteredProducts" @change-page="getPagination" />
                 </div>
             </div>

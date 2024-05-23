@@ -14,7 +14,7 @@
                             <VField type="email" class="form-control border border-primary subscribe-input" id="email"
                                 placeholder="user1@gmail.com" name="email" rules="email|required"
                                 :class="{ 'is-invalid': errors['email'] }" />
-                            <button className="subscribe-btn">
+                            <button className="subscribe-btn text-primary">
                                 <i class="bi bi-send-fill"></i>
                             </button>
                             <ErrorMessage name="email" class="invalid-feedback" />

@@ -1,6 +1,6 @@
 <template>
     <div class="bg-white pt-mh-100">
-        <div class="container">
+        <div class="container pb-5">
             <h1 class="fw-bold mt-3">訂單列表</h1>
             <table class="table fs-5">
                 <thead>
@@ -58,12 +58,6 @@ export default {
     },
     data() {
         return {
-            pages: {
-                has_pre: true,
-                has_next: true,
-                total_page: 7,
-                current_page: 1
-            },
             curPage: 1,
             tempOrder: {},
             tempId: '',
