@@ -24,12 +24,15 @@
                             <span v-else>未啟用</span>
                         </td>
                         <td>
-                            <button class="btn btn-outline-primary fw-bold">編輯</button>
+                            <button class="btn btn-outline-primary fw-bold"
+                            @click="showArticleModal(item.id)"
+                            >編輯</button>
                             <span> / </span>
                             <button class="btn btn-outline-danger" >刪除</button>
                         </td>
                     </tr>
                 </tbody>
+                <ArticleModal ref="ArticleModal" :article="tempArticle"/>
                
             </table>
             
@@ -42,14 +45,16 @@
 import { mapActions, mapState } from 'pinia'
 import adminStore from '@/stores/adminStore'
 import PaginationComponent from '@/components/admin/PaginationComponent.vue'
-
+import ArticleModal from '@/components/admin/modal/ArticleModal.vue'
 export default {
     components: {
-        PaginationComponent
+        PaginationComponent,
+        ArticleModal
     },
     data() {
         return {
-            curPage: 1
+            curPage: 1,
+            tempArticle: {}
         }
     },
     created() {
@@ -58,16 +63,24 @@ export default {
 
     methods: {
         ...mapActions(adminStore, [
-            'fetchArticles'
+            'fetchArticles',
+            'fetchArticle'
+
         ]),
         changePage(page) {
             this.curPage = page
         },
+        async showArticleModal(id) {
+            await this.fetchArticle(id);
+            this.tempArticle = {...this.article}
+            this.$refs.ArticleModal.showModal()
+        }
     },
     computed: {
         ...mapState(adminStore, [
             'articleList',
-            'pagination'
+            'pagination',
+            'article'
         ])
     }
 }

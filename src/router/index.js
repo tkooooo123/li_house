@@ -80,6 +80,10 @@ const router = createRouter({
         {
           path: 'product',
           component: () => import('@/views/admin/AdminProduct.vue'),
+        },
+        {
+          path: 'article',
+          component: () => import('@/views/admin/AdminArticle.vue'),
         }
       ]
     }

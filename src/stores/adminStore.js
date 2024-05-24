@@ -23,7 +23,8 @@ export default defineStore('adminStore', {
         productList: [],
         imgUrl: '',
         imgsUrl: [],
-        articleList: []
+        articleList: [],
+        article: {}
     }),
     actions: {
         async fetchOrders(page = 1) {
@@ -202,9 +203,28 @@ export default defineStore('adminStore', {
                 const api = `${VITE_API}api/${VITE_PATH}/admin/articles`;
                 const res = await axios.get(api);
                 if (res.data.success) {
-                    status.isLoading = false;
+
                     this.articleList = res.data.articles;
                     this.pagination = res.data.pagination;
+                    status.isLoading = false;
+                } else {
+                    toast.failToast(res.data.message);
+                    status.isLoading = false;
+                }
+
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
+            }
+        },
+        async fetchArticle(id) {
+            try {
+                status.isLoading = true;
+                const api = `${VITE_API}api/${VITE_PATH}/admin/article/${id}`;
+                const res = await axios.get(api);
+                if (res.data.success) {
+                    this.article = res.data.article;
+                    status.isLoading = false;
                 } else {
                     toast.failToast(res.data.message);
                     status.isLoading = false;
