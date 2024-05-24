@@ -22,7 +22,8 @@ export default defineStore('adminStore', {
         curPage: '',
         productList: [],
         imgUrl: '',
-        imgsUrl: []
+        imgsUrl: [],
+        articleList: []
     }),
     actions: {
         async fetchOrders(page = 1) {
@@ -33,7 +34,7 @@ export default defineStore('adminStore', {
                 if (res.data.success) {
                     status.isLoading = false;
                     this.orderList = res.data.orders;
-                    this.pagination = res.data.pagination
+                    this.pagination = res.data.pagination;
 
                 } else {
                     toast.failToast(res.data.message);
@@ -193,6 +194,25 @@ export default defineStore('adminStore', {
                 }
             } catch (error) {
                 toast.handleError();
+            }
+        },
+        async fetchArticles() {
+            try {
+                status.isLoading = true;
+                const api = `${VITE_API}api/${VITE_PATH}/admin/articles`;
+                const res = await axios.get(api);
+                if (res.data.success) {
+                    status.isLoading = false;
+                    this.articleList = res.data.articles;
+                    this.pagination = res.data.pagination;
+                } else {
+                    toast.failToast(res.data.message);
+                    status.isLoading = false;
+                }
+
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
             }
         }
     }
