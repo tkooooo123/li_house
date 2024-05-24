@@ -7,13 +7,21 @@
     }" :navigation="true" :modules="modules" class="mySwiper">
 
         <swiper-slide>
-            <img src="https://cdn.hk01.com/di/media/images/dw/20220503/598221776203288576687042.jpeg/4-Da4DZToAxwkdfgnO9OG9P23Cdm5ealbUkTsG1JE7A?v=w1920r16_9" alt="banner1" />
+            <RouterLink to="/products">
+                <img src="https://i.imgur.com/ob4OpWN.jpeg"
+                alt="banner1" />
+            </RouterLink>
         </swiper-slide>
         <swiper-slide>
-            <img src="/images/banner2.jpg" alt="banner2">
+            <RouterLink to="/products">
+                <img src="/images/banner2.jpg" alt="banner2">
+            </RouterLink>
         </swiper-slide>
         <swiper-slide>
-            <img src="/images/banner3.jpg" alt="banner3" />
+            <RouterLink to="/products">
+                <img src="/images/banner3.jpg" alt="banner3" />
+            </RouterLink>
+            
         </swiper-slide>
     </swiper>
 </template>
@@ -41,8 +49,9 @@ export default {
 .swiper-slide {
     img {
         max-height: 35rem;
-    width: 100%;
-    object-fit: cover;
+        width: 100%;
+       object-fit: cover;
+       aspect-ratio: 1;
     }
 }
 </style>

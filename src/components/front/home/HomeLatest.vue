@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <h2 class="fs-2 py-3 fw-bold text-center text-primary">新品登場</h2>
-        <ul class="p-0 row g-3">
+        <h2 class="fs-1 py-5 fw-bold text-center text-primary" data-aos="fade-down">新品登場</h2>
+        <ul class="p-0 row g-3" data-aos="fade-down" data-aos-delay="150">
             <li v-for="item in productList" :key="item.id" class="col-lg-3 col-sm-6">
                 <RouterLink :to="{path: `product/${item.id}`}">
                     <div class="product-card border border-primary rounded-2 h-100 d-flex flex-column">

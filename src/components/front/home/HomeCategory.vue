@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <div class="home-category">
-            <h3 class="py-3 fw-bold text-primary text-center fs-2">熱門分類</h3>
-            <ul class="home-category-list row g-3 p-0">
+            <h2 class="py-5 fw-bold text-primary text-center fs-1" data-aos="fade-down">熱門分類</h2>
+            <ul class="home-category-list row g-3 p-0" data-aos="fade-down"  data-aos-delay="150">
                 <li class="col-md-3 col-sm-6 text-decoration-none"
                 v-for="item in categoryList" :key="item.id"
                 >
@@ -54,6 +54,7 @@ export default {
             ]
         }
     },
+
 
 }
 </script>

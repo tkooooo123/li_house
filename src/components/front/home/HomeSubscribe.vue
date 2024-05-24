@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" data-aos="fade-down" data-aos-delay="150">
         <div class="subscribe bg-primary py-3 my-5 rounded-5 row">
             <div className="col-md-6 d-md-flex flex-row-reverse">
                 <div>
