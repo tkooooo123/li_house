@@ -260,6 +260,22 @@ export default defineStore('adminStore', {
                 status.isLoading = false;
             }
 
+        },async deleteAritcle(id) {
+            try {
+                status.isLoading = true;
+                const api = `${VITE_API}api/${VITE_PATH}/admin/article/${id}`;
+                const res = await axios.delete(api);
+                if (res.data.success) {
+                    await this.fetchArticles(this.curPage);
+                    toast.successToast(res.data.message);
+                    status.isLoading = false;
+                } else {
+                    toast.failToast(res.data.message);
+                    status.isLoading = false;
+                }
+            } catch (error) {
+                toast.handleError();
+            }
         }
     }
 

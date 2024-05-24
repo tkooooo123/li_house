@@ -33,14 +33,16 @@
                             <button class="btn btn-outline-primary fw-bold"
                                 @click="showArticleModal(item.id, 'edit')">編輯</button>
                             <span> / </span>
-                            <button class="btn btn-outline-danger">刪除</button>
+                            <button class="btn btn-outline-danger"
+                            @click="showDeleteModal(item)"
+                            >刪除</button>
                         </td>
                     </tr>
                 </tbody>
                 <ArticleModal ref="ArticleModal" :article="tempArticle" :type="type" />
 
             </table>
-
+            <DeleteModal ref="DeleteModal" :title="articleTitle" :text="text" @handle-delete="handleDelete"/>
             <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage" />
         </div>
     </div>
@@ -51,16 +53,21 @@ import { mapActions, mapState } from 'pinia'
 import adminStore from '@/stores/adminStore'
 import PaginationComponent from '@/components/admin/PaginationComponent.vue'
 import ArticleModal from '@/components/admin/modal/ArticleModal.vue'
+import DeleteModal from '@/components/admin/modal/DeleteModal.vue'
 export default {
     components: {
         PaginationComponent,
-        ArticleModal
+        ArticleModal,
+        DeleteModal
     },
     data() {
         return {
             curPage: 1,
             tempArticle: {},
-            type: ''
+            type: '',
+            articleTitle: '',
+            articleId:'',
+            text: '文章'
         }
     },
     created() {
@@ -70,7 +77,8 @@ export default {
     methods: {
         ...mapActions(adminStore, [
             'fetchArticles',
-            'fetchArticle'
+            'fetchArticle',
+            'deleteAritcle'
 
         ]),
         changePage(page) {
@@ -92,6 +100,15 @@ export default {
             }
             this.type = text
             this.$refs.ArticleModal.showModal()
+        },
+        showDeleteModal(article) {
+            this.articleTitle = article.title;
+            this.articleId = article.id;
+            this.$refs.DeleteModal.showModal();
+        },
+        async handleDelete() {
+            await this.deleteAritcle(this.articleId)
+            this.$refs.DeleteModal.hideModal();
         }
     },
     computed: {
