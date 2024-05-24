@@ -24,7 +24,8 @@ export default defineStore('adminStore', {
         imgUrl: '',
         imgsUrl: [],
         articleList: [],
-        article: {}
+        article: {},
+        couponList: []
     }),
     actions: {
         async fetchOrders(page = 1) {
@@ -276,7 +277,27 @@ export default defineStore('adminStore', {
             } catch (error) {
                 toast.handleError();
             }
-        }
+        },
+        async fetchCoupons() {
+            try {
+                status.isLoading = true;
+                const api = `${VITE_API}api/${VITE_PATH}/admin/coupons`;
+                const res = await axios.get(api);
+                if (res.data.success) {
+                    console.log(res)
+                    this.couponList = res.data.coupons;
+                    this.pagination = res.data.pagination;
+                    status.isLoading = false;
+                } else {
+                    toast.failToast(res.data.message);
+                    status.isLoading = false;
+                }
+
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
+            }
+        },
     }
 
 })
