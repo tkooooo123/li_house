@@ -12,7 +12,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="p-2">
-                                    <img :src="tempArticle.image" alt="" class="product-img">
+                                    <img :src="tempArticle.image" :alt="tempArticle.title" class="article-img">
                                 </div>
                                 <div class="mb-3">
                                     <label for="image" class="form-label">圖片連結<span class="text-danger">*</span></label>
@@ -23,7 +23,9 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="img">上傳圖片</label>
-                                    <input type="file" class="form-control border border-primary" ref="image" id="img">
+                                    <input type="file" class="form-control border border-primary" ref="image" id="img"
+                                    @change="uploadImage"
+                                    >
                                 </div>
 
                             </div>
@@ -53,7 +55,7 @@
                                             <div class="d-flex">
                                                 <VField type="text" class="form-control border border-primary w-75"
                                                     id="tag" placeholder="" name="tag" v-model.trim="tempTag" />
-                                                <button class="btn btn-primary" @click="addTag">新增</button>
+                                                <button type="button" class="btn btn-primary" @click="addTag">新增</button>
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +94,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary fw-bold rounded-pill"
                             data-bs-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary fw-bold rounded-pill text-white"> 刪除</button>
+                        <button type="submit" class="btn btn-primary fw-bold rounded-pill text-white">確定</button>
                     </div>
                 </div>
             </VForm>
@@ -104,10 +106,12 @@
 
 <script>
 import Modal from 'bootstrap/js/dist/modal'
+import adminStore from '@/stores/adminStore';
+import { mapActions, mapState } from 'pinia'
 
 
 export default {
-    props: ['article'],
+    props: ['article', 'type'],
     data() {
         return {
             modal: {},
@@ -117,6 +121,10 @@ export default {
         }
     },
     methods: {
+        ...mapActions(adminStore, [
+            'uploadImg',
+            'postArticle'
+        ]),
         showModal() {
             this.modal.show();
         },
@@ -129,12 +137,37 @@ export default {
         removeTag(tag) {
             this.tempTags = this.tempTags.filter(item => item !== tag);
         },
-        
-        handleSubmit() {
+        async uploadImage() {
+            if (this.$refs.image.files[0]) {
+                await this.uploadImg(this.$refs.image.files[0]);
+                this.tempArticle.image = this.imgUrl;
+            }
+        },
+        async handleSubmit() {
+            let data;
+            if(this.type === 'create') {
+                data = {            
+                ...this.tempArticle,
+                tag: [...this.tempTags],
+                create_at: Date.now()
+                }
 
+            } else {
+                data = {
+                ...this.tempArticle,
+                tag: [...this.tempTags],
+            }
+
+            }
+
+           await this.postArticle(data, this.type);
+           this.modal.hide();
         }
     },
-    created() {
+    computed: {
+        ...mapState(adminStore, [
+            'imgUrl'
+        ])
     },
     mounted() {
         this.modal = new Modal(this.$refs.modal);
@@ -143,12 +176,20 @@ export default {
         article() {
             this.tempArticle = { ...this.article };
             this.tempTags = [...this.article.tag];
+            this.tempTag = '';
         }
     }
 }
 </script>
 
 <style lang="scss">
+.article-img {
+    max-height: 300px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+
 .remove-btn {
     padding: 0;
     width: 1rem;
