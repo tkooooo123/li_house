@@ -1,7 +1,13 @@
 <template>
     <div class="bg-white pt-mh-100">
         <div class="container pb-5">
-            <h2 class="fw-bold mt-3">文章列表</h2>
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="fw-bold mt-3">文章列表</h2>
+                <button class="btn btn-primary"
+                @click="showArticleModal(null ,type = 'create')"
+                >新增文章</button>
+            </div>
+
             <table class="table fs-5">
                 <thead>
                     <tr class="fw-bold">
@@ -25,18 +31,17 @@
                         </td>
                         <td>
                             <button class="btn btn-outline-primary fw-bold"
-                            @click="showArticleModal(item.id)"
-                            >編輯</button>
+                                @click="showArticleModal(item.id, 'edit')">編輯</button>
                             <span> / </span>
-                            <button class="btn btn-outline-danger" >刪除</button>
+                            <button class="btn btn-outline-danger">刪除</button>
                         </td>
                     </tr>
                 </tbody>
-                <ArticleModal ref="ArticleModal" :article="tempArticle"/>
-               
+                <ArticleModal ref="ArticleModal" :article="tempArticle" :type="type" />
+
             </table>
-            
-            <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage"/>
+
+            <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage" />
         </div>
     </div>
 </template>
@@ -54,7 +59,8 @@ export default {
     data() {
         return {
             curPage: 1,
-            tempArticle: {}
+            tempArticle: {},
+            type: ''
         }
     },
     created() {
@@ -70,9 +76,21 @@ export default {
         changePage(page) {
             this.curPage = page
         },
-        async showArticleModal(id) {
-            await this.fetchArticle(id);
-            this.tempArticle = {...this.article}
+        async showArticleModal(id, text) {
+            if(text === 'edit') {
+                await this.fetchArticle(id);
+            this.tempArticle = { ...this.article };
+            } else {
+                this.tempArticle = {
+                    title: '',
+                    author: '',
+                    tag: [],
+                    description: '',
+                    content: '',
+                    isPublic: true
+                }
+            }
+            this.type = text
             this.$refs.ArticleModal.showModal()
         }
     },

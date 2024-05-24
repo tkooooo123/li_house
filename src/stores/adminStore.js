@@ -234,6 +234,32 @@ export default defineStore('adminStore', {
                 toast.handleError();
                 status.isLoading = false;
             }
+        },
+        async postArticle(data, type) {
+            try {
+                status.isLoading = true;
+                let api = `${VITE_API}api/${VITE_PATH}/admin/article`;
+                let method = 'post';
+
+                if(type === 'edit') {
+                    api = `${VITE_API}api/${VITE_PATH}/admin/article/${data.id}`
+                    method = 'put'
+                    
+                }
+                const res = await axios[method](api, { data })
+                if(res.data.success) {
+                    await this.fetchArticles(this.curPage);
+                    toast.successToast(res.data.message);
+                    status.isLoading = false;
+                } else {
+                    toast.failToast(...res.data.message)
+                    status.isLoading = false;
+                }
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
+            }
+
         }
     }
 
