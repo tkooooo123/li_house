@@ -3,7 +3,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <VForm v-slot="{ errors }" red="form" @submit="handleSubmit">
-                <div class="modal-content">
+                <div class="modal-content border-0">
                     <div class="modal-header">
                         <h5 class="modal-title fs-4 fw-bold" id="exampleModalLabel">編輯文章</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -55,7 +55,9 @@
                                             <div class="d-flex">
                                                 <VField type="text" class="form-control border border-primary w-75"
                                                     id="tag" placeholder="" name="tag" v-model.trim="tempTag" />
-                                                <button type="button" class="btn btn-primary" @click="addTag">新增</button>
+                                                <button type="button" class="btn btn-primary text-white" @click="addTag"
+                                                :class="{ disabled: tempTag.trim().length < 1, test: tempTag.trim().length < 1 }"
+                                                >新增</button>
                                             </div>
                                         </div>
                                     </div>
@@ -188,7 +190,6 @@ export default {
     aspect-ratio: 1;
     object-fit: cover;
 }
-
 
 .remove-btn {
     padding: 0;
