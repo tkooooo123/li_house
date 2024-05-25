@@ -17,29 +17,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in couponList"
-                    :key="item.id"
-                    >
-                    <td>{{ item.title }}</td>
-                    <td>{{ item.percent }} %</td>
-                    <td>{{ item.code }}</td>
-                    <td>{{ item.due_date }}</td>
-                    <td>
-                        <span v-if="item.is_enabled">啟用</span>
+                    <tr v-for="item in couponList" :key="item.id">
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.percent }} %</td>
+                        <td>{{ item.code }}</td>
+                        <td>{{ new Date(item.due_date).toLocaleDateString() }}</td>
+                        <td>
+                            <span v-if="item.is_enabled">啟用</span>
                             <span v-else>未啟用</span>
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-primary fw-bold"
-                                @click="showCouponModal(item.id, 'edit')">編輯</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-primary fw-bold"
+                                @click="showCouponModal(item, 'edit')">編輯</button>
                             <span> / </span>
-                            <button class="btn btn-outline-danger"
-                            @click="showDeleteModal(item)"
-                            >刪除</button>
-                    </td>
-                </tr>
-                <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage" />
+                            <button class="btn btn-outline-danger" @click="showDeleteModal(item)">刪除</button>
+                        </td>
+                    </tr>
+                    <CouponModal ref="CouponModal" :coupon="tempCoupon" :type="type"/>
                 </tbody>
             </table>
+
+            <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage" />
         </div>
     </div>
 </template>
@@ -48,28 +46,47 @@
 import { mapActions, mapState } from 'pinia'
 import adminStore from '@/stores/adminStore'
 import PaginationComponent from '@/components/admin/PaginationComponent.vue'
+import CouponModal from '@/components/admin/modal/CouponModal.vue'
 export default {
     components: {
-        PaginationComponent
+        PaginationComponent,
+        CouponModal
     },
     data() {
         return {
-            curPage: 1
+            curPage: 1,
+            tempCoupon: {},
+            type: ''
         }
     },
     methods: {
         ...mapActions(adminStore, [
             'fetchCoupons'
         ]),
-        showCouponModal() {
+        showCouponModal(coupon, type) {
+            if(type === 'edit') {
+                this.tempCoupon = {...coupon};
+            } else {
+                this.tempCoupon = {
+                    title: '',
+                    percent: '',
+                    due_date: '',
+                    code: '',
+                    is_enabled: 1
+                }
+            }
 
+            
+            this.type = type;
+            this.$refs.CouponModal.showModal();
         },
         showDeleteModal() {
 
         },
         changePage(page) {
             this.curPage = page
-        }
+        },
+       
     },
     computed: {
         ...mapState(adminStore, [

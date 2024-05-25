@@ -25,7 +25,8 @@ export default defineStore('adminStore', {
         imgsUrl: [],
         articleList: [],
         article: {},
-        couponList: []
+        couponList: [],
+        coupon: {}
     }),
     actions: {
         async fetchOrders(page = 1) {
@@ -284,7 +285,6 @@ export default defineStore('adminStore', {
                 const api = `${VITE_API}api/${VITE_PATH}/admin/coupons`;
                 const res = await axios.get(api);
                 if (res.data.success) {
-                    console.log(res)
                     this.couponList = res.data.coupons;
                     this.pagination = res.data.pagination;
                     status.isLoading = false;
@@ -298,6 +298,50 @@ export default defineStore('adminStore', {
                 status.isLoading = false;
             }
         },
+        async fetchCoupon(id) {
+            try {
+                status.isLoading = true;
+                const api = `${VITE_API}api/${VITE_PATH}/admin/coupon/${id}`;
+                const res = await axios.get(api);
+                if (res.data.success) {
+                    this.coupon = res.data.conpon;
+                    status.isLoading = false;
+                } else {
+                    toast.failToast(res.data.message);
+                    status.isLoading = false;
+                }
+
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
+            }
+        },
+        async postCoupon(data, type) {
+            try {
+                status.isLoading = true;
+                let api = `${VITE_API}api/${VITE_PATH}/admin/coupon`;
+                let method = 'post';
+
+                if(type === 'edit') {
+                    api = `${VITE_API}api/${VITE_PATH}/admin/coupon/${data.id}`
+                    method = 'put'
+                    
+                }
+                const res = await axios[method](api, { data })
+                if(res.data.success) {
+                    await this.fetchCoupons(this.curPage);
+                    toast.successToast(res.data.message);
+                    status.isLoading = false;
+                } else {
+                    toast.failToast(...res.data.message)
+                    status.isLoading = false;
+                }
+            } catch (error) {
+                toast.handleError();
+                status.isLoading = false;
+            }
+
+        }
     }
 
 })
