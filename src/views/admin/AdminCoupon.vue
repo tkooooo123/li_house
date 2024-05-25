@@ -36,7 +36,7 @@
                     <CouponModal ref="CouponModal" :coupon="tempCoupon" :type="type"/>
                 </tbody>
             </table>
-
+            <DeleteModal ref="DeleteModal" :title="couponTitle" :text="text" @handle-delete="handleDelete"/>
             <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage" />
         </div>
     </div>
@@ -47,21 +47,27 @@ import { mapActions, mapState } from 'pinia'
 import adminStore from '@/stores/adminStore'
 import PaginationComponent from '@/components/admin/PaginationComponent.vue'
 import CouponModal from '@/components/admin/modal/CouponModal.vue'
+import DeleteModal from '@/components/admin/modal/DeleteModal.vue'
 export default {
     components: {
         PaginationComponent,
-        CouponModal
+        CouponModal,
+        DeleteModal
     },
     data() {
         return {
             curPage: 1,
             tempCoupon: {},
-            type: ''
+            type: '',
+            couponTitle: '',
+            text: '優惠券',
+            couponId: ''
         }
     },
     methods: {
         ...mapActions(adminStore, [
-            'fetchCoupons'
+            'fetchCoupons',
+            'deleteCoupon'
         ]),
         showCouponModal(coupon, type) {
             if(type === 'edit') {
@@ -80,13 +86,18 @@ export default {
             this.type = type;
             this.$refs.CouponModal.showModal();
         },
-        showDeleteModal() {
-
+        showDeleteModal(coupon) {
+            this.couponTitle = coupon.title;
+            this.couponId = coupon.id;
+            this.$refs.DeleteModal.showModal();
         },
         changePage(page) {
             this.curPage = page
         },
-       
+       async handleDelete() {
+        await this.deleteCoupon(this.couponId);
+        this.$refs.DeleteModal.hideModal();
+       }
     },
     computed: {
         ...mapState(adminStore, [
