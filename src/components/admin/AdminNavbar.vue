@@ -3,7 +3,9 @@
         <div class="container d-flex align-items-center justify-content-between">
             <div class="d-flex">
                 <h1 class="m-0 fw-bold text-white">後台管理</h1>
-                <ul class="d-flex align-items-center m-0 p-0">
+                <ul class="d-flex align-items-center m-0 p-0"
+                :class="show"
+                >
                     <li>
                         <RouterLink to="/admin/product" class="nav-link">
                             商品
@@ -26,9 +28,10 @@
                     </li>
                 </ul>
             </div>
+            <button class="fw-bold btn text-white border-0 align-items-center" :class="show"
+                @click="logout"><span>登出</span> <i class="bi bi-box-arrow-right fs-4 ms-2"></i> </button>
 
 
-            <button class="fw-bold btn text-white d-flex align-items-center" @click="logout"><span>登出</span> <i class="bi bi-box-arrow-right fs-4 ms-2"></i> </button>
         </div>
 
     </nav>
@@ -36,11 +39,17 @@
 
 <script>
 import axios from 'axios'
-import { mapActions } from 'pinia'
+import { mapActions, mapState } from 'pinia'
 import toastStore from '@/stores/toastStore'
+import adminStore from '@/stores/adminStore'
 
 
 export default {
+    data() {
+        return {
+            show: 'd-none'
+        }
+    },
     methods: {
         ...mapActions(toastStore, [
             'handleError'
@@ -48,18 +57,31 @@ export default {
         async logout() {
             try {
                 const api = `${import.meta.env.VITE_API}logout`
-            const res = await axios.post(api)
-            if (res.data.success) {
-                document.cookie = `mysToken=;expires=${new Date(0)}`
-                this.$router.push('/login')
-            }
-                
+                const res = await axios.post(api)
+                if (res.data.success) {
+                    document.cookie = 'hexToken=;'
+                    this.show = 'd-none'
+                    this.$router.push('/admin/login')
+                }
+
             } catch (error) {
                 this.handleError();
             }
-            
         }
 
+    },
+    computed: {
+        ...mapState(adminStore, [
+            'isAdmin'
+        ])
+
+    },
+    watch: {
+        isAdmin() {
+            if (this.isAdmin) {
+                this.show = 'd-flex'
+            }
+        }
     }
 }
 </script>
