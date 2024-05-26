@@ -63,16 +63,16 @@ const router = createRouter({
           path: 'cart/success/:orderId',
           component: () => import('@/views/front/CartSuccess.vue'),
         },
-        {
-          path: 'login',
-          component: () => import('@/views/front/AdminLogin.vue'),
-        }
       ]
     },
     {
       path: '/admin',
       component: () => import('@/views/admin/AdminDashboard.vue'),
       children: [
+        {
+          path: 'login',
+          component: () => import('@/views/admin/AdminLogin.vue'),
+        },
         {
           path: 'order',
           component: () => import('@/views/admin/AdminOrder.vue'),

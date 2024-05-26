@@ -8,16 +8,14 @@
                         <div class="mb-3">
                             <label for="email" class="form-label">電子郵件<span class="text-danger">*</span></label>
                             <VField type="email" class="form-control border border-primary" id="email"
-                                placeholder="user1@gmail.com" name="email" rules="email|required"
-                                v-model="email"
+                                placeholder="user1@gmail.com" name="email" rules="email|required" v-model="email"
                                 :class="{ 'is-invalid': errors['email'] }" />
                             <ErrorMessage name="email" class="invalid-feedback" />
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">密碼<span class="text-danger">*</span></label>
                             <VField type="password" class="form-control border border-primary" id="password"
-                                placeholder="請輸入密碼" name="密碼" rules="required"
-                                v-model="password"
+                                placeholder="請輸入密碼" name="密碼" rules="required" v-model="password"
                                 :class="{ 'is-invalid': errors['密碼'] }" />
                             <ErrorMessage name="密碼" class="invalid-feedback" />
                         </div>
@@ -40,6 +38,7 @@
 import toastStore from '@/stores/toastStore';
 import axios from 'axios';
 import statusStore from '@/stores/statusStore';
+
 const toast = toastStore();
 const status = statusStore();
 
@@ -57,21 +56,22 @@ export default {
                 const api = `${import.meta.env.VITE_API}admin/signin`
                 const data = { username: this.email, password: this.password }
                 const res = await axios.post(api, data)
-               if(res.data.success) {
-                const { token, expired } = res.data;
-                document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
-                toast.successToast(res.data.message);
-                this.$router.push('/admin/product');
-                status.isLoading = false;
-               } else {
-                toast.failToast('帳號或密碼錯誤，請重新輸入');
-                status.isLoading = false;
-               }
+                if (res.data.success) {
+                    const { token, expired } = res.data;
+                    document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
+
+                    toast.successToast(res.data.message);
+                    this.$router.push('/admin/product');
+                    status.isLoading = false;
+                } else {
+                    toast.failToast('帳號或密碼錯誤，請重新輸入');
+                    status.isLoading = false;
+                }
             } catch (error) {
                 toast.handleError();
                 status.isLoading = false;
             }
         }
-    }
+    },
 }
 </script>

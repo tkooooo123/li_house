@@ -12,9 +12,10 @@ import AdminNavbar from "@/components/admin/AdminNavbar.vue";
 import LoadingComponent from "@/components/layout/LoadingComponent.vue";
 import ToastMessage from "@/components/layout/ToastMessage.vue";
 import { mapActions, mapState } from 'pinia';
+import axios from "axios";
+
+import adminStore from '@/stores/adminStore';
 import statusStore from '@/stores/statusStore';
-import axios from 'axios';
-import toastStore from '@/stores/toastStore';
 
 export default {
     components: {
@@ -26,28 +27,49 @@ export default {
         ...mapState(statusStore, [
             'isLoading'
         ]),
+        ...mapState(adminStore, [
+        ]),
+        path() {
+            return this.$route.path
+        }
     },
     methods: {
-        ...mapActions(toastStore, [
-            'failToast',
-            'handleError'
+        ...mapActions(adminStore, [
+            'checkUser',
+            'setIsAdmin',
+            'removeIsAdmin'
         ]),
-        async checkUser() {
+        async checkIsAdmin() {
             try {
+                const token = document.cookie
+                    .split('; ')
+                    .find((row) => row.startsWith('hexToken='))
+                    ?.split('=')[1];
+
+                axios.defaults.headers.common['Authorization'] = token;
+
                 const api = `${import.meta.env.VITE_API}api/user/check`;
                 const res = await axios.post(api)
-                if (!res.data.success) {
-                    this.failToast(res.data.message);
-                    this.$router.push('/login')
+                if (res.data.success) {
+                    this.setIsAdmin()
+
+                } else {
+                    this.removeIsAdmin()
+                    this.$router.push('/admin/login')
                 }
             } catch (error) {
-                this.handleError()
+                this.handleError();
             }
 
         }
     },
     created() {
-        this.checkUser();
+        this.checkIsAdmin();
+    },
+    watch: {
+        path() {
+            this.checkIsAdmin()
+        }
     }
 
 }

@@ -7,13 +7,6 @@ const { VITE_API, VITE_PATH } = import.meta.env;
 const toast = toastStore();
 const status = statusStore()
 
-const token = document.cookie
-    .split('; ')
-    .find((row) => row.startsWith('hexToken='))
-    ?.split('=')[1]
-
-axios.defaults.headers.common['Authorization'] = token;
-
 
 export default defineStore('adminStore', {
     status: () => ({
@@ -26,7 +19,9 @@ export default defineStore('adminStore', {
         articleList: [],
         article: {},
         couponList: [],
-        coupon: {}
+        coupon: {},
+        isAdmin: false,
+
     }),
     actions: {
         async fetchOrders(page = 1) {
@@ -226,11 +221,9 @@ export default defineStore('adminStore', {
                 const res = await axios.get(api);
                 if (res.data.success) {
                     this.article = res.data.article;
+ 
+                } 
                     status.isLoading = false;
-                } else {
-                    toast.failToast(res.data.message);
-                    status.isLoading = false;
-                }
 
             } catch (error) {
                 toast.handleError();
@@ -358,7 +351,15 @@ export default defineStore('adminStore', {
             } catch (error) {
                 toast.handleError();
             }
+        },
+        setIsAdmin() {
+            this.isAdmin = true;
+        },
+        removeIsAdmin () {
+            this.isAdmin = false;
         }
+
+        
     }
 
 })
