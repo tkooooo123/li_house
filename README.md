@@ -5,7 +5,7 @@
 ![後台頁面](https://i.imgur.com/JVNvrjf.png)
 ## Demo 連結
 ```
-https://li-house.vercel.app/
+https://li-house.vercel.app/#/
 ```
 ## 網站功能
 ### 前台
