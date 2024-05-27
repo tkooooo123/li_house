@@ -10,7 +10,7 @@
             </div>
         <div class="row mt-3 mb-5">
             <div class="col-md-3">
-                <ul class="p-0 d-flex flex-md-column">
+                <ul class="category-list p-0 d-flex flex-md-column ">
                     <li class="category-item py-2" v-for="category in categoryList" :key="category">
                         <span class="fw-bold rounded-2" :class="{ active: categorySelected === category }"
                             @click="test(category)">{{ category }}
@@ -91,10 +91,14 @@ export default {
 @import 'bootstrap/scss/functions';
 @import '@/assets/helpers/variables';
 
+.category-list  {
+    flex-wrap: wrap;
+}
+
 .category-item {
     span {
         padding: 8px;
-
+        word-break: keep-all;
     }
 
     .active,
