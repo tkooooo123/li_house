@@ -138,9 +138,6 @@ export default {
             this.modal.hide();
         }
     },
-    created() {
-        
-    },
     mounted() {
         this.modal = new Modal(this.$refs.modal);
     },

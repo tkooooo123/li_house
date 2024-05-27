@@ -17,8 +17,6 @@
 </template>
 
 <script>
-import { set } from '@vueuse/core';
-import { RouterLink } from 'vue-router';
 
 
 export default {
