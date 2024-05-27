@@ -89,7 +89,11 @@ const router = createRouter({
           path: 'coupon',
           component: () => import('@/views/admin/AdminCoupon.vue'),
         }
-      ]
+      ],
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: () => import('@/views/NotFound.vue'),
     }
 
   ],
