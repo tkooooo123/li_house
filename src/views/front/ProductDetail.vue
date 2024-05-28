@@ -10,12 +10,20 @@
         <div class="row pt-3 g-3">
             <div class="col-md-7 d-md-flex flex-sm-row-reverse justify-content-between">
                 <div className="product-img-wrapper">
-                    <img className="product-img" :src="product.imageUrl" :alt="product.title" />
+                    <img className="product-img" :src="tempImg" :alt="product.title" />
                 </div>
 
-                <div class="d-flex  flex-md-column text-nowrap overflow-hidden me-md-3 me-0 mt-3 mt-md-0">
+                <div class="d-flex flex-md-column text-nowrap overflow-hidden me-md-3 me-0 mt-3 mt-md-0">
+                    
+                    <div class="bg-light m-1">
+                        <img class="product-images" :src="product.imageUrl" alt="商品其他圖片"
+                        @click="showImg(product.imageUrl)"
+                        >
+                    </div>
                     <div class="bg-light m-1" v-for="img in product.imagesUrl" :key="img">
-                        <img class="product-images" :src="img" alt="商品其他圖片">
+                        <img class="product-images" :src="img" alt="商品其他圖片"
+                        @click="showImg(img)"
+                        >
                     </div>
                 </div>
             </div>
@@ -68,6 +76,7 @@ export default {
     data() {
         return {
             qty: 1,
+            tempImg: ''
         }
     },
     components: {
@@ -76,9 +85,6 @@ export default {
     },
     created() {
         this.fetchProduct(this.$route.params.productId);
-    },
-    mounted() {
-
     },
     methods: {
         ...mapActions(productsStore, [
@@ -90,6 +96,9 @@ export default {
         getQty(num) {
             this.qty = num
         },
+        showImg(img) {
+            this.tempImg = img
+        }
 
     },
     computed: {
@@ -108,6 +117,9 @@ export default {
             if (newId !== oldId) {
                 this.fetchProduct(newId);
             }
+        },
+        product() {
+            this.tempImg = this.product.imageUrl    
         }
     }
 }
@@ -124,6 +136,9 @@ export default {
 .product-images {
     width: 100px;
     aspect-ratio: 1;
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .product-content {
