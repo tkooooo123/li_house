@@ -31,10 +31,9 @@
                                 <span v-else>未付款</span>
                             </td>
                             <td>
-                                <span v-if="order.status === 0">未處理</span>
-                                <span v-else-if="order.status === 1">配送中</span>
+                                <span v-if="order.status === 1">配送中</span>
                                 <span v-else-if="order.status === 2">已送達</span>
-                                <span v-else>未處理</span>
+                                <span v-else>處理中</span>
                             </td>
                             <td>
                                 <button class="btn btn-outline-primary fw-bold"
@@ -42,6 +41,7 @@
                             </td>
                         </tr>
                     </tbody>
+                    <OrderModal ref="OrderModal" :order="tempOrder"/>
                 </table>
                 <div class="d-flex justify-content-center">
                     <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage" />
@@ -55,6 +55,7 @@
 <script>
 import axios from 'axios';
 import PaginationComponent from '@/components/admin/PaginationComponent.vue'
+import OrderModal from '@/components/front/order/OrderModal.vue'
 import toastStore from '@/stores/toastStore';
 import statusStore from '@/stores/statusStore';
 
@@ -65,13 +66,15 @@ const status = statusStore()
 export default {
 
     components: {
-        PaginationComponent
+        PaginationComponent,
+        OrderModal
     },
     data() {
         return {
             orderList: [],
             pagination: {},
-            curPage: 1
+            curPage: 1,
+            tempOrder: ''
         }
 
     },
@@ -97,7 +100,11 @@ export default {
         changePage(page) {
             this.curPage = page;
             console.log(page)
-        }
+        },
+         showOrderModal(order) {
+            this.tempOrder = { ...order }
+            this.$refs.OrderModal.showModal()
+        },
     },
 
     created() {
