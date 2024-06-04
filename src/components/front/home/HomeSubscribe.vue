@@ -47,9 +47,8 @@
     &-btn {
 
         position: absolute;
-        top: 0;
+        top: 1px;
         right: -37.6px;
-        height: 37.6px;
         width: 40px;
         padding: 6px;
         border-top-right-radius: 8px;
