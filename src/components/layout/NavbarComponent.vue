@@ -6,7 +6,14 @@
                 <div class="toggle"></div>
             </button>
             <div class="toggle-menu bg-primary d-md-none">
-                <ul class="mt-3">
+                <ul class="mt-3 container">
+                    <li>
+                        <RouterLink to="/orders" class="nav-link ms-2"
+                        @click="switchToggle"
+                        >
+                            我的訂單
+                        </RouterLink>
+                    </li>
                     <li>
                         <RouterLink to="/brandstory" class="nav-link ms-2"
                         @click="switchToggle"
@@ -53,7 +60,10 @@
                         @clickKeyword="clickKeyword" />
 
                 </div>
-                <div class=" position-relative">
+                <RouterLink to="/orders" class="d-none d-md-flex">
+                    <i class="bi bi-person-circle nav-icon fs-5 rounded-3"></i>
+                </RouterLink>
+                <div class="position-relative">
                     <RouterLink to="/cart">
                         <i class="bi bi-basket-fill nav-icon rounded-3 fs-5"></i>
                     </RouterLink>
