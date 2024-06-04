@@ -12,13 +12,14 @@
             <div class="col-md-3">
             </div>
             <div class="col-md-9">
-                <table class="table fs-5 ">
+               <div class="rounded-3 overflow-hidden">
+                <table class="table fs-5">
                     <thead>
                         <tr class="fw-bold">
                             <th scope='col'>訂購日期</th>
                             <th scope='col'>總金額</th>
                             <th scope='col'>付款狀態</th>
-                            <th scope='col'>處理狀態</th>
+                            <th class="d-none d-md-flex" scope='col'>配送狀態</th>
                             <th scope='col'>其他</th>
                         </tr>
                     </thead>
@@ -28,9 +29,11 @@
                             <td>NT$ {{ Math.ceil(order.total) }}</td>
                             <td>
                                 <span v-if="order.is_paid">已付款</span>
-                                <span v-else>未付款</span>
+                                <button v-else class="btn btn-primary"
+                                @click="handlePay(order.id)"
+                                >前往付款</button>
                             </td>
-                            <td>
+                            <td class="d-none d-md-flex">
                                 <span v-if="order.status === 1">配送中</span>
                                 <span v-else-if="order.status === 2">已送達</span>
                                 <span v-else>處理中</span>
@@ -43,6 +46,7 @@
                     </tbody>
                     <OrderModal ref="OrderModal" :order="tempOrder"/>
                 </table>
+               </div>
                 <div class="d-flex justify-content-center">
                     <PaginationComponent :pagination="pagination" :curPage="curPage" @change-page="changePage" />
 
@@ -58,6 +62,8 @@ import PaginationComponent from '@/components/admin/PaginationComponent.vue'
 import OrderModal from '@/components/front/order/OrderModal.vue'
 import toastStore from '@/stores/toastStore';
 import statusStore from '@/stores/statusStore';
+import { mapActions } from 'pinia';
+import cartStore from '@/stores/cartStore';
 
 const { VITE_API, VITE_PATH } = import.meta.env;
 const toast = toastStore();
@@ -79,6 +85,9 @@ export default {
 
     },
     methods: {
+        ...mapActions(cartStore, [
+            'goToPay'
+        ]),
         async fetchOrders(page = 1) {
             try {
                 status.isLoading = true;
@@ -105,6 +114,10 @@ export default {
             this.tempOrder = { ...order }
             this.$refs.OrderModal.showModal()
         },
+        async handlePay(id) {
+            await this.goToPay(id);
+            await this.fetchOrders(this.curPage);
+        }
     },
 
     created() {
