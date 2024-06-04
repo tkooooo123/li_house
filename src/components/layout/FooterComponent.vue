@@ -16,7 +16,7 @@
                                 <RouterLink to="/privacy" class="nav-item fw-bold">隱私權政策</RouterLink>
                             </ul>
                         </div>
-                        <div class="col-md-4 text-white">
+                        <div class="col-md-4 text-white mt-md-0 mt-3">
                             <div class="d-flex align-items-center mb-2"><h4 class="fw-bold m-0">Li House</h4> <RouterLink to="/admin/login" class="rounded-pill bg-white fw-bold py-1 px-2 ms-3">後台登入</RouterLink></div>
                             <ul class="d-flex flex-column p-0">
                                 <span class="fw-bold">營業時間： 10:00 - 20:00</span>
